@@ -1,0 +1,7 @@
+
+=== lambda_min at eps=0.5 (housing/pilot) ===
+    support restriction: 1651/3125 nodes
+  symmetry check: max rel asym = 8.30e-10
+  Pontryagin coherence: <H eta,eta>/2 = 9.6927e-05  vs measured excess = 9.7213e-05  (ratio 0.997)
+    Hv products: 10
+    Hv products: 20
