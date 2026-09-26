@@ -6,15 +6,28 @@ Cómputo estimado en total: ~1,5–2 semanas de CPU de portátil, que en buena p
 
 ---
 
-## Bloque 0 — Preparación (½ día, sin cómputo largo)
+## Bloque 0 — Preparación ✅ HECHO
 
-| # | Tarea | Detalle |
+| # | Tarea | Estado |
 |---|---|---|
-| 0.1 | Entorno | `pip install -e ".[dev]"` y `pytest tests/`: los 18 tests deben pasar |
-| 0.2 | Registrar la KL en E2 | Modificar `experiments/e2_descent.py` para guardar en cada `run` la curva $\int\mathcal E(\nu^s_t\mid\nu^*_t)\,dt$ con `gradient_flow.kl_to` (ya existe). Es necesario para §6.2(d). Los JSON actuales de E2 no la tienen |
-| 0.3 | Nuevo script `experiments/fig_optimum.py` | Regenera las figuras de §4.2 (trayectorias y marginales) y la tabla de concentración **desde los checkpoints de este repo**: ε=0.05 asym y ε=0.02 `asymflow`. Las figuras actuales vienen de la memoria y se hicieron sobre el iterado **no convergido** de ε=0.02 |
-| 0.4 | Nuevo script `experiments/13_genericity.py` | Variantes de datos: *moons* con semillas 0–4 (ruido 0.12) y ruido 0.08/0.16; *housing* con subsamples 0–4. Para cada una: continuación pilot hasta 0.05, $\lambda_{\min}$ en 0.1 y 0.05, nube E1 reducida (30 puntos) en 0.1 y 0.05. Necesita que `datasets.py` acepte `seed`/`noise`/`subsample` como parámetros (hoy están fijos a SEED=42) |
-| 0.5 | Nuevo script `experiments/14_jacobi.py` | *moons*, ε=0.05, pilot. Para $k_1\in\{2,4,6,8\}$: partículas iniciales $X^*(t_{k_1})$ (en el checkpoint, clave `X`), horizonte $[t_{k_1},T]$ con $K-k_1$ cortes, Picard desde el prior, TV frente a la restricción de $\nu^*$ y $\lambda_{\min}$ del problema recortado. Ojo al peso trapezoidal del primer corte |
+| 0.1 | Entorno y tests | `pytest tests/`: 21 tests en verde (2 nuevos: KL a lo largo del flujo; reinicio en capa intermedia = restricción de ν*, la base discreta del test de Jacobi) |
+| 0.2 | KL en E2 | `gradient_flow(..., nu_ref=nu_star)` registra $\int\mathcal E(\nu^s_t\mid\nu^*_t)\,dt$ en cada refresco; `e2_descent.py` guarda `kl`, `s_kl` y `kl_rate` por run, y la figura `e2_kl_*.png` |
+| 0.3 | `experiments/fig_optimum.py` | Figuras de trayectorias y marginales desde los checkpoints; tabla de concentración (`results/concentration.json`). **Ya ejecutada la tabla**: reproduce la de la memoria y añade *moons* ε=0.02 (endpoint refinado): $N_{\rm eff}=81$, $n_{50\%}=17$. Metida en el preprint |
+| 0.4 | `experiments/13_genericity.py` | 12 variantes (`--list`), reanudable, paralelizable con `--variant`. `datasets.housing_problem` acepta ahora `features=` para fijar (MedInc, AveOccup) al cambiar la submuestra |
+| 0.5 | `experiments/14_jacobi.py` | Reinicio en $k_1\in\{2,4,6,8\}$, TV frente a la restricción y $\lambda_{\min}$; figura `jacobi_*.png` (incluye $t_1=0$ desde E3 si existe) |
+
+Comandos que faltan de este bloque (rápidos, minutos):
+
+```bash
+cd experiments
+python fig_optimum.py                              # trayectorias + marginales, asym ε=0.05
+python fig_optimum.py --grid asymflow --eps 0.02   # sólo moons hasta que exista housing asymflow
+```
+
+Luego, en `paper/main.tex`, sustituir `flow_trajectories.png` y
+`02_explicit_moons_mse_marginals_asym.png` por
+`optimum_trajectories_asym_eps0.05.png` y `optimum_marginals_moons_asym_eps0.05.png`
+y quitar los `\todo{regenerate …}`.
 
 ## Bloque 1 — *Housing* (obligatorio; lo esencial para el revisor)
 
@@ -43,8 +56,20 @@ Coste: ~10 h (E1) + ~8 h (E2) + ~10 h (E3) + ~8 h (flow-refine).
 
 ## Bloque 3 — Experimentos nuevos
 
-- Genericidad (0.4): ~2–3 días en total. Rellena la Tabla `tab:genericity`.
-- Jacobi (0.5): ~4 cortes × (Picard ~5 min + E3 ~2 h) ≈ 1 día. Da el texto de §5.4 y una figura pequeña o una fila de tabla.
+```bash
+cd experiments
+# genericidad: 12 variantes independientes; p.ej. 3 procesos en paralelo
+python 13_genericity.py --variant 0 1 2 3 &
+python 13_genericity.py --variant 4 5 6 7 &
+python 13_genericity.py --variant 8 9 10 11 &
+# (prueba rápida sin Hessiana: --no-hessian)
+
+# Jacobi (moons, ε=0.05; la fila t1=0 sale de e3_lambda_min_moons_pilot.json)
+python 14_jacobi.py --problem moons --eps 0.05
+```
+
+- Genericidad: ~2–3 días en total (continuación ~30 min + 2 λ_min ~2–3 h + nubes ~30 min por variante). Rellena `tab:genericity`. Si varios procesos terminan a la vez escriben el mismo `results/genericity.json`; el script relee antes de escribir, pero es mejor que no coincidan.
+- Jacobi: ~4 cortes × (Picard ~5 min + λ_min ~2 h) ≈ 1 día. Da el texto de §5.4 y la figura `jacobi_moons_eps0.05.png`.
 
 ## Bloque 4 — Redacción final
 

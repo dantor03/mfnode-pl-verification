@@ -37,3 +37,19 @@ def test_cocycle_identity(tiny):
     res = t["res"]
     p = solver.cocycle_gradients(res.X, res.Phi, t["y"])
     np.testing.assert_allclose(p[-1], res.X[-1] - t["y"], atol=1e-10)
+
+
+def test_restart_at_intermediate_layer_reproduces_restriction(tiny):
+    """Dynamic programming at the discrete level (basis of the Jacobi test):
+    the problem restarted at (t_k1, X*(t_k1)) on [t_k1, T] has as fixed point
+    the restriction of nu* to the slices k >= k1."""
+    t = tiny
+    K, k1 = t["K"], 2
+    dt = 1.0 / K
+    nu_star = t["res"].nu
+    X, _ = solver.forward_pass(nu_star, t["x0"], t["A"], 2, dt, K)
+    res = solver.picard(X[k1], t["y"], t["A"], d1=2, T=1.0 - k1 * dt,
+                        K=K - k1, eps=t["eps"], omega=0.2, max_iter=300,
+                        tol=1e-8, verbose=False)
+    tv = 0.5 * np.abs(res.nu - nu_star[k1:]).sum(axis=1).max()
+    assert tv < 1e-5, f"restarted fixed point differs from restriction: {tv:.2e}"

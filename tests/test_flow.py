@@ -91,3 +91,20 @@ def test_flow_from_fixed_point_stays(tiny):
         T=1.0, R=t["R"], n_steps=20, refresh_every=5)
     assert abs(res.J_history[-1] - res.J_history[0]) < 1e-6, (
         res.J_history[0], res.J_history[-1])
+
+
+def test_flow_tracks_relative_entropy_to_nu_star(tiny):
+    """With nu_ref = nu*, the logged int KL(nu^s || nu*) dt starts at the
+    perturbation's lambda^2 and decreases along the descent."""
+    t = tiny
+    rng = np.random.default_rng(2)
+    nu0 = perturbations.mixture_perturbation(t["res"].nu, 0.2, rng)
+    res = gradient_flow.gradient_flow(
+        nu0, t["x0"], t["y"], t["A"], 2, t["mp"], t["eps"],
+        T=1.0, R=t["R"], n_steps=100, refresh_every=5, nu_ref=t["res"].nu)
+    kl = res.extras["kl_history"]
+    assert kl.shape == res.J_history.shape
+    assert np.all(kl >= 0.0)
+    np.testing.assert_allclose(kl[0], gradient_flow.kl_to(nu0, t["res"].nu,
+                                                          1.0 / t["K"]))
+    assert kl[-1] < 0.5 * kl[0]

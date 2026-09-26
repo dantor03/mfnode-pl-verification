@@ -1,0 +1,72 @@
+{
+ "moons_pilot_eps0.5": {
+  "problem": "moons",
+  "grid": "pilot",
+  "eps": 0.5,
+  "top1_mass": 0.3298998587743333,
+  "n_eff": 290.3396515381639,
+  "n50": 60,
+  "top10_overlap": 10,
+  "M": 3125
+ },
+ "moons_pilot_eps0.1": {
+  "problem": "moons",
+  "grid": "pilot",
+  "eps": 0.1,
+  "top1_mass": 0.4756091264277983,
+  "n_eff": 202.25818778131668,
+  "n50": 35,
+  "top10_overlap": 6,
+  "M": 3125
+ },
+ "moons_pilot_eps0.05": {
+  "problem": "moons",
+  "grid": "pilot",
+  "eps": 0.05,
+  "top1_mass": 0.5498678602779752,
+  "n_eff": 145.44460130117977,
+  "n50": 26,
+  "top10_overlap": 4,
+  "M": 3125
+ },
+ "moons_pilotflow_eps0.02": {
+  "problem": "moons",
+  "grid": "pilotflow",
+  "eps": 0.02,
+  "top1_mass": 0.6912707094068162,
+  "n_eff": 80.84420381012156,
+  "n50": 17,
+  "top10_overlap": 4,
+  "M": 3125
+ },
+ "housing_pilot_eps0.5": {
+  "problem": "housing",
+  "grid": "pilot",
+  "eps": 0.5,
+  "top1_mass": 0.31389193117129105,
+  "n_eff": 294.76834391536744,
+  "n50": 62,
+  "top10_overlap": 9,
+  "M": 3125
+ },
+ "housing_pilot_eps0.1": {
+  "problem": "housing",
+  "grid": "pilot",
+  "eps": 0.1,
+  "top1_mass": 0.31509874582539643,
+  "n_eff": 293.05239584340535,
+  "n50": 61,
+  "top10_overlap": 8,
+  "M": 3125
+ },
+ "housing_pilot_eps0.05": {
+  "problem": "housing",
+  "grid": "pilot",
+  "eps": 0.05,
+  "top1_mass": 0.32932288384841724,
+  "n_eff": 288.65799922486815,
+  "n50": 61,
+  "top10_overlap": 7,
+  "M": 3125
+ }
+}

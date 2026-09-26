@@ -3,7 +3,10 @@
 Initialize the Wasserstein gradient flow at controlled TV distances from nu*,
 integrate until J - J* drops 3-4 orders of magnitude, fit the slope of
 log(J(nu^s) - J*) vs s, and compare c-hat with the PL prediction (decay
->= e^{-2 c s}).  Several seeds and amplitudes: insensitivity of the rate to
+>= e^{-2 c s}).  Along the same descents the integrated relative entropy
+int KL(nu^s_t || nu*_t) dt (the distance of DD Thm 5.1) is recorded and its
+exponential rate fitted as well: convergence of the trajectory, not only of
+the cost.  Several seeds and amplitudes: insensitivity of the rate to
 the initial direction IS the PL phenomenon.
 
 Runs on the pilot grid by design (cost decision of the plan).
@@ -62,6 +65,7 @@ def main(problem_name, eps, deltas=(0.02, 0.05, 0.1), seeds=(0, 1, 2),
     print(f"J* = {J_star:.8f}  (eps={eps}, {problem_name}/{grid_name})")
 
     fig, ax = plt.subplots(figsize=(6, 4.4))
+    fig_kl, ax_kl = plt.subplots(figsize=(6, 4.4))
     runs = []
     for delta in deltas:
         for seed in seeds:
@@ -70,18 +74,26 @@ def main(problem_name, eps, deltas=(0.02, 0.05, 0.1), seeds=(0, 1, 2),
             res = gradient_flow.gradient_flow(
                 nu0, prob["x0"], prob["y"], A, d1=2, mp_per_axis=mp, eps=eps,
                 T=T, R=R_GRID, n_steps=n_steps, refresh_every=refresh_every,
-                grad_fn=prob["grad_fn"], terminal_fn=prob["terminal_fn"])
+                grad_fn=prob["grad_fn"], terminal_fn=prob["terminal_fn"],
+                nu_ref=nu_star)
             gap = res.J_history - J_star
             pos = gap > 1e-16
             s, g = res.s_grid[pos], gap[pos]
             rate = fit_rate(s, g)
+            kl = res.extras["kl_history"]
+            kl_pos = kl > 1e-16
+            kl_rate = fit_rate(res.s_grid[kl_pos], kl[kl_pos])
             runs.append(dict(delta=delta, seed=seed, rate=float(rate),
-                             s=list(map(float, s)), gap=list(map(float, g))))
+                             s=list(map(float, s)), gap=list(map(float, g)),
+                             kl_rate=float(kl_rate),
+                             s_kl=list(map(float, res.s_grid[kl_pos])),
+                             kl=list(map(float, kl[kl_pos]))))
+            ax_kl.semilogy(res.s_grid[kl_pos], kl[kl_pos], alpha=0.75)
             ax.semilogy(s, g, alpha=0.75,
                         label=rf"$\delta$={delta}, seed={seed}, "
                               rf"$\hat c$={rate:.3g}")
             print(f"  delta={delta:5.3f} seed={seed}  c-hat = {rate:.4f}  "
-                  f"(mass_err={res.mass_error:.1e})")
+                  f"KL rate = {kl_rate:.4f}  (mass_err={res.mass_error:.1e})")
 
     ax.set_xlabel("descent time $s$")
     ax.set_ylabel(r"$J(\nu^s) - J^*$")
@@ -92,6 +104,15 @@ def main(problem_name, eps, deltas=(0.02, 0.05, 0.1), seeds=(0, 1, 2),
     fig.tight_layout()
     fig.savefig(out, dpi=150)
     print(f"-> {out}")
+
+    ax_kl.set_xlabel("descent time $s$")
+    ax_kl.set_ylabel(r"$\int \mathcal{E}(\nu^s_t\,|\,\nu^*_t)\,dt$")
+    ax_kl.set_title(rf"E2 — trajectory, {problem_name}, $\varepsilon$={eps}")
+    ax_kl.grid(alpha=0.3)
+    out_kl = FIG_DIR / f"e2_kl_{problem_name}_eps{eps:g}.png"
+    fig_kl.tight_layout()
+    fig_kl.savefig(out_kl, dpi=150)
+    print(f"-> {out_kl}")
 
     out_json = RESULTS / f"e2_{problem_name}_eps{eps:g}.json"
     with open(out_json, "w") as fh:

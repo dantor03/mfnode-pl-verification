@@ -689,7 +689,8 @@ effective support $N_{\mathrm{eff}}=\exp(H(\bar w))$, the number $n_{50\%}$
 of nodes carrying half the mass, and the overlap of the ten heaviest nodes
 between the first and the last layer.  The two benchmarks behave
 differently.  On \emph{moons} the mass concentrates as $\eps$ decreases
-($N_{\mathrm{eff}}$ halves from $290$ to $145$ nodes, $4.7\%$ of the grid)
+($N_{\mathrm{eff}}$ falls from $290$ nodes at $\eps=0.5$ to $145$ at
+$\eps=0.05$ and $81$, $2.6\%$ of the grid, at $\eps=0.02$)
 and the ranking becomes layer-dependent (only $4$ of the top-$10$ nodes at
 $t=0$ remain at $t=T$ for $\eps=0.05$): the optimal network uses different
 neurons at different depths.  The dominant pairs are high-gain directional
@@ -709,15 +710,17 @@ top-$10$ overlap $t=0$ vs $t=T$\\
 \emph{moons}   & 0.5  & 0.33 & 290 & 60 & 10/10\\
 \emph{moons}   & 0.1  & 0.48 & 202 & 35 & 6/10\\
 \emph{moons}   & 0.05 & 0.55 & 145 & 26 & 4/10\\
+\emph{moons}   & 0.02$^\dagger$ & 0.69 & 81 & 17 & 4/10\\
 \emph{housing} & 0.5  & 0.31 & 295 & 62 & 9/10\\
 \emph{housing} & 0.1  & 0.32 & 293 & 61 & 8/10\\
 \emph{housing} & 0.05 & 0.33 & 289 & 61 & 7/10\\
+\emph{housing} & 0.02$^\dagger$ & \pend & \pend & \pend & \pend\\
 \bottomrule
 \end{tabular}
 \vskip 2pt
 \caption{Concentration of $\bnu^*_\eps$ on the pilot grid ($M=3125$).
 $N_{\mathrm{eff}}=\exp(\text{Shannon entropy of }\bar w)$.
-\todo{extend to $\eps=0.02$ with the flow-refined endpoint.}}
+$^\dagger$Flow-refined endpoint (Section~\ref{sec:e2}(c)).}
 \label{tab:concentration}
 \end{table}
 

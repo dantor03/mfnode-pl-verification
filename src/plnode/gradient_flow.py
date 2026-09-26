@@ -154,11 +154,14 @@ class FlowResult:
 def gradient_flow(nu0, x0, y, A, d1, mp_per_axis, eps, *, T=1.0, R=2.0,
                   c1=0.05, c2=0.5, n_steps=1000, ds=None, refresh_every=5,
                   grad_fn=None, terminal_fn=None, renormalize=True,
-                  flux="sg", fisher_mode="fd", verbose=False):
+                  flux="sg", fisher_mode="fd", verbose=False, nu_ref=None):
     """Integrate the Fokker-Planck gradient flow from nu0 for n_steps.
 
     Psi (hence the drift potential and the forward pass) is refreshed every
-    `refresh_every` steps; J and I_h are logged at each refresh.
+    `refresh_every` steps; J and I_h are logged at each refresh.  If `nu_ref`
+    is given (typically nu*), the integrated relative entropy
+    int KL(nu^s_t || nu_ref_t) dt is logged as well, in
+    `extras["kl_history"]` (trajectory-level convergence).
     """
     mp = tuple(int(m) for m in mp_per_axis)
     K = nu0.shape[0] - 1
@@ -166,7 +169,7 @@ def gradient_flow(nu0, x0, y, A, d1, mp_per_axis, eps, *, T=1.0, R=2.0,
     log_nu_inf = log_prior(A, c1, c2)
     nu = nu0.copy()
 
-    s_log, J_log, I_log = [], [], []
+    s_log, J_log, I_log, KL_log = [], [], [], []
     mass_err, min_mass = 0.0, np.inf
     s, step = 0.0, 0
     ds_used = ds
@@ -192,6 +195,8 @@ def gradient_flow(nu0, x0, y, A, d1, mp_per_axis, eps, *, T=1.0, R=2.0,
         s_log.append(s)
         J_log.append(Jval)
         I_log.append(I_h)
+        if nu_ref is not None:
+            KL_log.append(kl_to(nu, nu_ref, dt))
         if verbose:
             print(f"  s={s:9.4f}  step={step:6d}  J={Jval:.8f}  I_h={I_h:.3e}")
 
@@ -210,7 +215,9 @@ def gradient_flow(nu0, x0, y, A, d1, mp_per_axis, eps, *, T=1.0, R=2.0,
                       I_history=np.array(I_log), mass_error=mass_err,
                       min_mass=min_mass, ds=ds_used,
                       extras={"refresh_every": refresh_every, "eps": eps,
-                              "flux": flux})
+                              "flux": flux,
+                              "kl_history": (np.array(KL_log)
+                                             if nu_ref is not None else None)})
 
 
 # =============================================================================

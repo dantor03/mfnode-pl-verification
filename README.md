@@ -36,7 +36,8 @@ src/plnode/       library
   perturbations.py   perturbation clouds around ν*
   datasets.py        frozen benchmarks (moons / California Housing top-2)
 experiments/      runners (00–03 solver & gates, 10–12 uniqueness/continuation/
-                  concentration, e1–e4 PL experiments, fig_star)
+                  concentration, 13 genericity, 14 Jacobi condition,
+                  e1–e4 PL experiments, fig_star, fig_optimum)
 results/          frozen ν* checkpoints (nu_star/), experiment outputs, logs
 tests/            correctness suite (pytest)
 ```

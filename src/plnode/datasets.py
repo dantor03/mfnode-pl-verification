@@ -54,9 +54,14 @@ def moons_problem(n=400, noise=0.12, seed=SEED):
             "metric_name": "accuracy"}
 
 
-def get_california_top2(n_train=400, n_test=200, seed=SEED):
+def get_california_top2(n_train=400, n_test=200, seed=SEED, features=None):
     """California Housing, top-2 features by |corr| with the target
-    (MedInc, AveOccup on the frozen subsample), X and y standardized."""
+    (MedInc, AveOccup on the frozen subsample), X and y standardized.
+
+    features: optional list of two feature names to use instead of the
+    top-2 selection (keeps the regression problem fixed when only the
+    subsample changes, e.g. in the genericity probe).
+    """
     data = fetch_california_housing()
     X_full = data.data.astype(np.float64)
     y_full = data.target.astype(np.float64)
@@ -73,14 +78,18 @@ def get_california_top2(n_train=400, n_test=200, seed=SEED):
 
     corrs = np.array([np.corrcoef(X_tr[:, j], y_tr)[0, 1]
                       for j in range(X_tr.shape[1])])
-    cols = np.argsort(-np.abs(corrs))[:2]
+    if features is None:
+        cols = np.argsort(-np.abs(corrs))[:2]
+    else:
+        cols = np.array([CALIFORNIA_FEATURES.index(f) for f in features])
     names = [CALIFORNIA_FEATURES[i] for i in cols]
     return (X_tr[:, cols], y_tr, X_te[:, cols], y_te, names)
 
 
-def housing_problem(n_train=400, n_test=200, seed=SEED):
+def housing_problem(n_train=400, n_test=200, seed=SEED, features=None):
     """Benchmark 2 packaged for the solver (scalar MSE on coordinate 1)."""
-    X_tr, y_tr, X_te, y_te, names = get_california_top2(n_train, n_test, seed)
+    X_tr, y_tr, X_te, y_te, names = get_california_top2(n_train, n_test, seed,
+                                                        features)
     y_dummy = np.zeros((len(y_tr), 2))   # placeholder, unused with grad_fn
 
     def grad_scalar(X_T):
