@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "plnode"
+version = "0.1.0"
+description = "Numerical verification of stability and local Polyak-Lojasiewicz inequalities for entropic mean-field Neural ODEs (Daudin-Delarue 2025)"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+keywords = ["neural-ode", "mean-field", "entropic-regularization", "polyak-lojasiewicz", "wasserstein-gradient-flow"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+dependencies = [
+    "matplotlib>=3.9",
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "scikit-learn>=1.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "ruff>=0.4",
+]
+
+[project.urls]
+Repository = "https://github.com/dantor03/daudin-delarue-moonsdata"
+Paper      = "https://arxiv.org/abs/2507.08486"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["plnode*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["old"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501", "E402"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

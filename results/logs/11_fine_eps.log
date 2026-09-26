@@ -1,0 +1,42 @@
+
+=== fine-eps continuation: moons on pilot (M=3125), warm start eps=0.05 ===
+   eps  iters  conv          J  diffTV/om   sym_err  accuracy
+ 0.040     42  True    0.43580   4.85e-04   0.0e+00     0.840   [565s]
+ 0.030    200 False    0.39038   4.01e-01   0.0e+00     0.870   [2970s]
+
+=== fine-eps continuation: moons on pilot (M=3125), warm start eps=0.05 ===
+   eps  iters  conv          J  diffTV/om   sym_err  accuracy
+ 0.040  -- resumed from existing checkpoint --
+ 0.030  -- resumed from existing checkpoint --
+ 0.025    200 False    0.36825   5.14e-01   0.0e+00     0.915   [2456s]
+
+=== fine-eps continuation: moons on pilot (M=3125), warm start eps=0.05 ===
+   eps  iters  conv          J  diffTV/om   sym_err  accuracy
+ 0.040  -- resumed from existing checkpoint --
+ 0.030  -- resumed from existing checkpoint --
+ 0.025  -- resumed from existing checkpoint --
+
+=== fine-eps continuation: moons on pilot (M=3125), warm start eps=0.05 ===
+   eps  iters  conv          J  diffTV/om   sym_err  accuracy
+ 0.040  -- resumed from existing checkpoint --
+ 0.030  -- resumed from existing checkpoint --
+ 0.025  -- resumed from existing checkpoint --
+
+=== fine-eps continuation: moons on pilot (M=3125), warm start eps=0.05 ===
+   eps  iters  conv          J  diffTV/om   sym_err  accuracy
+ 0.040  -- resumed from existing checkpoint --
+ 0.030  -- resumed from existing checkpoint --
+ 0.025  -- resumed from existing checkpoint --
+ 0.020    300 False    0.34211   5.50e-01   0.0e+00     0.935   [1720s]
+TV(fine, coarse-schedule iterate) at eps=0.02: 2.234e-10
+TV(fine, flow-refined exact fixed point):   5.467e-01
+
+=== fine-eps continuation: housing on pilot (M=3125), warm start eps=0.05 ===
+   eps  iters  conv          J  diffTV/om   sym_err  R2_train
+ 0.040     18  True    0.24536   4.42e-04   0.0e+00     0.547   [115s]
+ 0.030     20  True    0.24103   4.48e-04   0.0e+00     0.555   [133s]
+ 0.025     19  True    0.23833   4.44e-04   0.0e+00     0.560   [133s]
+ 0.020    300 False    0.32010   5.55e-01   0.0e+00     0.572   [2011s]
+TV(fine, coarse-schedule iterate) at eps=0.02: 6.868e-16
+
+DONE fine-eps

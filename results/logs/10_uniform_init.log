@@ -1,0 +1,14 @@
+
+=== uniform init: moons on pilot (M=3125) ===
+   eps  iters  conv     J_unif     J_ckpt  TV(unif,ckpt)   sym_err
+ 0.500     35  True    0.83385    0.83356       4.60e-04   0.0e+00   [474s]
+ 0.100     37  True    0.60247    0.60242       4.00e-04   0.0e+00   [559s]
+ 0.050     45  True    0.47521    0.47520       1.87e-04   0.0e+00   [644s]
+
+=== uniform init: housing on pilot (M=3125) ===
+   eps  iters  conv     J_unif     J_ckpt  TV(unif,ckpt)   sym_err
+ 0.500     35  True    0.27349    0.27321       5.58e-04   0.0e+00   [578s]
+ 0.100     35  True    0.25888    0.25882       5.41e-04   0.0e+00   [609s]
+ 0.050     35  True    0.24880    0.24877       5.19e-04   0.0e+00   [563s]
+
+DONE uniform-init

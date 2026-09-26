@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# macOS / IDEs
+.DS_Store
+.vscode/
+.idea/
+.claude/
+
+# LaTeX build artifacts (paper/main.pdf IS tracked)
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# ...but keep the experiment logs cited in the paper
+!results/logs/*.log
+
+# Partial / in-progress checkpoints and process files
+results/nu_star/*.part.npz
+*.pid

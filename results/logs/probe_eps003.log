@@ -1,0 +1,21 @@
+continuando moons eps=0.03 desde el iterado 200 (120 its mas)...
+  it   0  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it   1  J=0.39038  term=0.21437  ent=0.17602  diffTV=8.03e-02
+  it   2  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it   3  J=0.39038  term=0.21437  ent=0.17602  diffTV=8.03e-02
+  it   4  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it  10  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it  20  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it  30  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it  40  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it  50  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it  60  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it  70  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it  80  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it  90  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it 100  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+  it 110  J=0.38742  term=0.21319  ent=0.17423  diffTV=8.03e-02
+
+diffTV: inicio 8.029e-02  min 8.029e-02  final 8.029e-02
+converged=False  iters=120
+ultimos 10 diffTV: [0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08]
