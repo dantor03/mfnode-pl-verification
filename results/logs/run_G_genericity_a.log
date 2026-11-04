@@ -5,7 +5,7 @@
   eps=0.1: iters=27 conv=True diffTV/omega=4.7e-04 accuracy=0.780
   eps=0.05: iters=37 conv=True diffTV/omega=4.3e-04 accuracy=0.835
   eps=0.1: c = 0.6336080968813396  (30/30 admissible)
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
 [0.00042769]
 not reaching the requested tolerance 0.0001.
 Use iteration 296 instead with accuracy 
@@ -14,19 +14,19 @@ Use iteration 296 instead with accuracy
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
   eps=0.1: lambda_min = 1.4683e-01
   eps=0.05: c = 0.34178963970171566  (30/30 admissible)
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
 [10816.48968088]
 not reaching the requested tolerance 0.0001.
 Use iteration 32 instead with accuracy 
 0.26969077859753066.
 
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
 [0.26969078]
 not reaching the requested tolerance 0.0001.
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
   eps=0.05: lambda_min = 7.2905e-02
--> /Users/danieltorres/mfnode-pl-verification/results/genericity.json
+-> results/genericity.json
 
 ##### moons_seed1 #####
   eps=0.5: iters=25 conv=True diffTV/omega=4.2e-04 accuracy=0.705
@@ -34,7 +34,7 @@ not reaching the requested tolerance 0.0001.
   eps=0.1: iters=27 conv=True diffTV/omega=4.7e-04 accuracy=0.780
   eps=0.05: iters=37 conv=True diffTV/omega=4.6e-04 accuracy=0.835
   eps=0.1: c = 0.6336372192936225  (30/30 admissible)
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
 [0.01129425]
 not reaching the requested tolerance 0.0001.
 Use iteration 301 instead with accuracy 

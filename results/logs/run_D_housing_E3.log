@@ -9,7 +9,7 @@
     Hv products: 40
   lambda_min = 1.061844e+00   (47 Hv products, 701s)
 
--> /Users/danieltorres/mfnode-pl-verification/results/e3_lambda_min_housing_pilot.json
+-> results/e3_lambda_min_housing_pilot.json
 
 === lambda_min at eps=0.1 (housing/pilot) ===
     support restriction: 1513/3125 nodes
@@ -45,20 +45,20 @@
     Hv products: 280
     Hv products: 290
     Hv products: 300
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
 [0.00025623]
 not reaching the requested tolerance 0.0001.
 Use iteration 121 instead with accuracy 
 0.0001233805573348067.
 
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
 [0.00012338]
 not reaching the requested tolerance 0.0001.
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
   lambda_min = 2.363679e-01   (308 Hv products, 6932s)
 
--> /Users/danieltorres/mfnode-pl-verification/results/e3_lambda_min_housing_pilot.json
+-> results/e3_lambda_min_housing_pilot.json
 
 === lambda_min at eps=0.05 (housing/pilot) ===
     support restriction: 1491/3125 nodes
@@ -94,17 +94,17 @@ not reaching the requested tolerance 0.0001.
     Hv products: 280
     Hv products: 290
     Hv products: 300
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
 [0.002147]
 not reaching the requested tolerance 0.0001.
 Use iteration 300 instead with accuracy 
 0.0003571957980661175.
 
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
 [0.00035581]
 not reaching the requested tolerance 0.0001.
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
   lambda_min = 1.343762e-01   (308 Hv products, 7232s)
 
--> /Users/danieltorres/mfnode-pl-verification/results/e3_lambda_min_housing_pilot.json
+-> results/e3_lambda_min_housing_pilot.json

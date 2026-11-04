@@ -1,14 +1,14 @@
 
 === restart at t=0.20 (k1=2, K'=8) ===
   Picard: iters=42 conv=True diffTV/omega=4.61e-04  TV(restart, restriction)=3.47e-04
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
 [0.01046786]
 not reaching the requested tolerance 0.0001.
 Use iteration 212 instead with accuracy 
 0.007749720306780173.
 
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
 [0.00774442]
 not reaching the requested tolerance 0.0001.
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
@@ -16,14 +16,14 @@ not reaching the requested tolerance 0.0001.
 
 === restart at t=0.40 (k1=4, K'=6) ===
   Picard: iters=39 conv=True diffTV/omega=4.68e-04  TV(restart, restriction)=5.52e-04
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
 [0.01013671]
 not reaching the requested tolerance 0.0001.
 Use iteration 298 instead with accuracy 
 0.004550470233193518.
 
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
 [0.00454773]
 not reaching the requested tolerance 0.0001.
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
@@ -31,14 +31,14 @@ not reaching the requested tolerance 0.0001.
 
 === restart at t=0.60 (k1=6, K'=4) ===
   Picard: iters=38 conv=True diffTV/omega=4.57e-04  TV(restart, restriction)=5.28e-04
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
 [0.0001374]
 not reaching the requested tolerance 0.0001.
 Use iteration 301 instead with accuracy 
 0.00013739929850939582.
 
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
 [0.00013604]
 not reaching the requested tolerance 0.0001.
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
@@ -46,18 +46,18 @@ not reaching the requested tolerance 0.0001.
 
 === restart at t=0.80 (k1=8, K'=2) ===
   Picard: iters=37 conv=True diffTV/omega=4.48e-04  TV(restart, restriction)=4.63e-04
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
 [0.00118027]
 not reaching the requested tolerance 0.0001.
 Use iteration 297 instead with accuracy 
 0.00024924534551357624.
 
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
-/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
 [0.00024892]
 not reaching the requested tolerance 0.0001.
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
   lambda_min = 4.326917e-02  (303 Hv)
 
--> /Users/danieltorres/mfnode-pl-verification/results/jacobi_moons_pilot_eps0.05.json
--> /Users/danieltorres/mfnode-pl-verification/paper/figures/jacobi_moons_eps0.05.png
+-> results/jacobi_moons_pilot_eps0.05.json
+-> paper/figures/jacobi_moons_eps0.05.png

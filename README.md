@@ -5,6 +5,8 @@
 
 Preprint and code by **Daniel Torres González** (ICMAT–CSIC, JAE Intro fellowship).
 
+📄 **Preprint (draft):** [`paper/main.pdf`](paper/main.pdf)
+
 The preprint is a numerical companion to
 
 > S. Daudin, F. Delarue, *Genericity of Polyak–Łojasiewicz inequalities for
