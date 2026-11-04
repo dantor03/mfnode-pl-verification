@@ -1,0 +1,29 @@
+
+##### moons_seed4 #####
+  eps=0.5: iters=25 conv=True diffTV/omega=4.2e-04 accuracy=0.693
+  eps=0.2: iters=26 conv=True diffTV/omega=4.1e-04 accuracy=0.738
+  eps=0.1: iters=27 conv=True diffTV/omega=4.9e-04 accuracy=0.780
+  eps=0.05: iters=38 conv=True diffTV/omega=4.6e-04 accuracy=0.825
+  eps=0.1: c = 0.6358646255283612  (30/30 admissible)
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+[0.00015854]
+not reaching the requested tolerance 0.0001.
+Use iteration 289 instead with accuracy 
+0.0001585373359555997.
+
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+  eps=0.1: lambda_min = 1.4541e-01
+  eps=0.05: c = 0.34288558382783174  (30/30 admissible)
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+[0.11026183]
+not reaching the requested tolerance 0.0001.
+Use iteration 209 instead with accuracy 
+0.11013218883899956.
+
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+[0.00263851]
+not reaching the requested tolerance 0.0001.
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+  eps=0.05: lambda_min = 4.3276e-02
+-> results/genericity.json
