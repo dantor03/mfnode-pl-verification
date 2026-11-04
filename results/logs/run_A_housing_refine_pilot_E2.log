@@ -1,3 +1,42 @@
 start: I_h = 4.6223e-02   diffTV/om (Picard) = 0.555
   chunk   0  s=  106.30  J=0.31336037  I_h=7.185e-02  (132s)
   chunk   1  s=  167.70  J=0.23518740  I_h=6.756e-06  (280s)
+  chunk   2  s=  269.13  J=0.23508851  I_h=4.668e-08  (452s)
+  chunk   3  s=  370.56  J=0.23508787  I_h=5.140e-10  (633s)
+  chunk   4  s=  471.97  J=0.23508789  I_h=6.027e-12  (824s)
+  chunk   5  s=  573.37  J=0.23508789  I_h=7.285e-14  (1039s)
+  chunk   6  s=  674.78  J=0.23508789  I_h=9.074e-16  (1259s)
+  chunk   7  s=  776.19  J=0.23508789  I_h=1.656e-17  (1486s)
+  chunk   8  s=  877.59  J=0.23508789  I_h=5.264e-18  (1712s)
+  chunk   9  s=  979.00  J=0.23508789  I_h=5.117e-18  (1954s)
+
+refined: J = 0.23508789   I_h = 5.1168e-18  (was 4.6223e-02)
+TV(refined, Picard) = 0.8658   sym_err = 0.0e+00   TV(Gibbs(nu), nu) = 1.0576e-09   R2_train = 0.566
+-> /Users/danieltorres/mfnode-pl-verification/results/nu_star/housing_pilotflow_eps0.02.npz
+J* = 0.27318339  (eps=0.5, housing/pilot)
+  delta=0.020 seed=0  c-hat = 4.5049  KL rate = 4.7860  (mass_err=4.4e-16)
+  delta=0.020 seed=1  c-hat = 4.5060  KL rate = 4.7872  (mass_err=4.4e-16)
+  delta=0.020 seed=2  c-hat = 4.5087  KL rate = 4.7901  (mass_err=4.4e-16)
+  delta=0.050 seed=0  c-hat = 3.9814  KL rate = 3.9670  (mass_err=4.4e-16)
+  delta=0.050 seed=1  c-hat = 3.9819  KL rate = 3.9672  (mass_err=4.4e-16)
+  delta=0.050 seed=2  c-hat = 3.9838  KL rate = 3.9689  (mass_err=4.4e-16)
+  delta=0.100 seed=0  c-hat = 3.5717  KL rate = 3.5570  (mass_err=4.4e-16)
+  delta=0.100 seed=1  c-hat = 3.5712  KL rate = 3.5563  (mass_err=4.4e-16)
+  delta=0.100 seed=2  c-hat = 3.5732  KL rate = 3.5581  (mass_err=4.4e-16)
+-> /Users/danieltorres/mfnode-pl-verification/paper/figures/e2_descent_housing_eps0.5.png
+-> /Users/danieltorres/mfnode-pl-verification/paper/figures/e2_kl_housing_eps0.5.png
+-> /Users/danieltorres/mfnode-pl-verification/results/e2_housing_eps0.5.json
+J* = 0.26672839  (eps=0.2, housing/pilot)
+  delta=0.020 seed=0  c-hat = 1.9513  KL rate = 1.9488  (mass_err=4.4e-16)
+  delta=0.020 seed=1  c-hat = 1.6498  KL rate = 1.9493  (mass_err=4.4e-16)
+  delta=0.020 seed=2  c-hat = 1.6509  KL rate = 1.9507  (mass_err=4.4e-16)
+  delta=0.050 seed=0  c-hat = 1.5520  KL rate = 1.6085  (mass_err=4.4e-16)
+  delta=0.050 seed=1  c-hat = 1.5520  KL rate = 1.6087  (mass_err=4.4e-16)
+  delta=0.050 seed=2  c-hat = 1.5528  KL rate = 1.6095  (mass_err=4.4e-16)
+  delta=0.100 seed=0  c-hat = 1.3903  KL rate = 1.4374  (mass_err=4.4e-16)
+  delta=0.100 seed=1  c-hat = 1.3896  KL rate = 1.4372  (mass_err=4.4e-16)
+  delta=0.100 seed=2  c-hat = 1.3908  KL rate = 1.4380  (mass_err=4.4e-16)
+-> /Users/danieltorres/mfnode-pl-verification/paper/figures/e2_descent_housing_eps0.2.png
+-> /Users/danieltorres/mfnode-pl-verification/paper/figures/e2_kl_housing_eps0.2.png
+-> /Users/danieltorres/mfnode-pl-verification/results/e2_housing_eps0.2.json
+J* = 0.25881564  (eps=0.1, housing/pilot)

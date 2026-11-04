@@ -1,0 +1,6 @@
+
+##### moons_seed3 #####
+  eps=0.5: iters=25 conv=True diffTV/omega=4.2e-04 accuracy=0.698
+  eps=0.2: iters=26 conv=True diffTV/omega=4.1e-04 accuracy=0.733
+  eps=0.1: iters=27 conv=True diffTV/omega=4.8e-04 accuracy=0.767
+  eps=0.05: iters=39 conv=True diffTV/omega=4.6e-04 accuracy=0.830

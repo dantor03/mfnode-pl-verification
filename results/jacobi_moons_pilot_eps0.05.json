@@ -1,0 +1,50 @@
+[
+ {
+  "k1": 2,
+  "t1": 0.2,
+  "iters": 42,
+  "converged": true,
+  "dist_to_fixed_point": 0.00046119977546173636,
+  "tv_to_restriction": 0.00034671851604673994,
+  "picard_seconds": 245.81734895706177,
+  "lambda_min": 0.04343285028777974,
+  "hv_products": 303,
+  "hessian_seconds": 5498.10086607933
+ },
+ {
+  "k1": 4,
+  "t1": 0.4,
+  "iters": 39,
+  "converged": true,
+  "dist_to_fixed_point": 0.00046787436512618635,
+  "tv_to_restriction": 0.0005518118984153117,
+  "picard_seconds": 264.2302141189575,
+  "lambda_min": 0.043345156091200425,
+  "hv_products": 303,
+  "hessian_seconds": 4577.0669910907745
+ },
+ {
+  "k1": 6,
+  "t1": 0.6000000000000001,
+  "iters": 38,
+  "converged": true,
+  "dist_to_fixed_point": 0.00045665074604109453,
+  "tv_to_restriction": 0.0005282930554943903,
+  "picard_seconds": 190.1287670135498,
+  "lambda_min": 0.04328780804979562,
+  "hv_products": 303,
+  "hessian_seconds": 2904.6881968975067
+ },
+ {
+  "k1": 8,
+  "t1": 0.8,
+  "iters": 37,
+  "converged": true,
+  "dist_to_fixed_point": 0.00044817403687414704,
+  "tv_to_restriction": 0.000463238916423046,
+  "picard_seconds": 87.11017537117004,
+  "lambda_min": 0.04326917310666196,
+  "hv_products": 303,
+  "hessian_seconds": 1427.3021099567413
+ }
+]

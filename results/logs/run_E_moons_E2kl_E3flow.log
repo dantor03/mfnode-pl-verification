@@ -1,1 +1,29 @@
 J* = 0.83352406  (eps=0.5, moons/pilot)
+  delta=0.020 seed=0  c-hat = 4.6882  KL rate = 5.4619  (mass_err=4.4e-16)
+  delta=0.020 seed=1  c-hat = 4.6912  KL rate = 5.4661  (mass_err=4.4e-16)
+  delta=0.020 seed=2  c-hat = 4.6932  KL rate = 5.4682  (mass_err=4.4e-16)
+  delta=0.050 seed=0  c-hat = 4.1175  KL rate = 4.1309  (mass_err=4.4e-16)
+  delta=0.050 seed=1  c-hat = 3.7709  KL rate = 4.1328  (mass_err=4.4e-16)
+  delta=0.050 seed=2  c-hat = 4.1203  KL rate = 4.1336  (mass_err=4.4e-16)
+  delta=0.100 seed=0  c-hat = 3.6630  KL rate = 3.6681  (mass_err=4.4e-16)
+  delta=0.100 seed=1  c-hat = 3.4930  KL rate = 3.6682  (mass_err=4.4e-16)
+  delta=0.100 seed=2  c-hat = 3.6645  KL rate = 3.6695  (mass_err=4.4e-16)
+-> /Users/danieltorres/mfnode-pl-verification/paper/figures/e2_descent_moons_eps0.5.png
+-> /Users/danieltorres/mfnode-pl-verification/paper/figures/e2_kl_moons_eps0.5.png
+-> /Users/danieltorres/mfnode-pl-verification/results/e2_moons_eps0.5.json
+J* = 0.72187014  (eps=0.2, moons/pilot)
+  delta=0.020 seed=0  c-hat = 1.5981  KL rate = 1.9332  (mass_err=4.4e-16)
+  delta=0.020 seed=1  c-hat = 1.6003  KL rate = 1.9352  (mass_err=4.4e-16)
+  delta=0.020 seed=2  c-hat = 1.5848  KL rate = 1.9360  (mass_err=4.4e-16)
+  delta=0.050 seed=0  c-hat = 1.3845  KL rate = 1.5397  (mass_err=4.4e-16)
+  delta=0.050 seed=1  c-hat = 1.4108  KL rate = 1.5405  (mass_err=4.4e-16)
+  delta=0.050 seed=2  c-hat = 1.5379  KL rate = 1.5416  (mass_err=4.4e-16)
+  delta=0.100 seed=0  c-hat = 1.3177  KL rate = 1.3794  (mass_err=4.4e-16)
+  delta=0.100 seed=1  c-hat = 1.3159  KL rate = 1.3788  (mass_err=4.4e-16)
+  delta=0.100 seed=2  c-hat = 1.3203  KL rate = 1.3807  (mass_err=4.4e-16)
+-> /Users/danieltorres/mfnode-pl-verification/paper/figures/e2_descent_moons_eps0.2.png
+-> /Users/danieltorres/mfnode-pl-verification/paper/figures/e2_kl_moons_eps0.2.png
+-> /Users/danieltorres/mfnode-pl-verification/results/e2_moons_eps0.2.json
+J* = 0.60241464  (eps=0.1, moons/pilot)
+  delta=0.020 seed=0  c-hat = 0.8718  KL rate = 0.8733  (mass_err=4.4e-16)
+  delta=0.020 seed=1  c-hat = 0.8728  KL rate = 0.8743  (mass_err=4.4e-16)

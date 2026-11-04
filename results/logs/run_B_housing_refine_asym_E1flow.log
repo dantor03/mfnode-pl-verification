@@ -1,1 +1,19 @@
 start: I_h = 3.5293e-04   diffTV/om (Picard) = 0.203
+  chunk   0  s=   67.99  J=0.23526135  I_h=3.428e-08  (669s)
+  chunk   1  s=  134.66  J=0.23526091  I_h=1.932e-10  (1570s)
+  chunk   2  s=  201.32  J=0.23526091  I_h=4.419e-12  (2576s)
+  chunk   3  s=  267.97  J=0.23526091  I_h=1.604e-13  (3500s)
+  chunk   4  s=  334.63  J=0.23526091  I_h=6.532e-15  (4395s)
+  chunk   5  s=  401.29  J=0.23526091  I_h=2.966e-16  (5278s)
+  chunk   6  s=  467.95  J=0.23526091  I_h=2.438e-17  (6201s)
+  chunk   7  s=  534.61  J=0.23526091  I_h=1.170e-17  (7121s)
+
+refined: J = 0.23526091   I_h = 1.1606e-17  (was 3.5293e-04)
+TV(refined, Picard) = 0.0781   sym_err = 1.2e-17   TV(Gibbs(nu), nu) = 2.7343e-08   R2_train = 0.566
+-> /Users/danieltorres/mfnode-pl-verification/results/nu_star/housing_asymflow_eps0.02.npz
+
+--- eps=0.02:  J*=0.235261  I_h(nu*)=1.161e-17 ---
+    cloud size=100  usable=100  c(eps) = inf I/(J-J*) = 0.2272
+
+-> /Users/danieltorres/mfnode-pl-verification/results/e1_housing_asymflow.json
+-> /Users/danieltorres/mfnode-pl-verification/paper/figures/e1_scatter_housing_asymflow.png

@@ -1,2 +1,11 @@
 
 --- eps=0.5:  J*=0.273200  I_h(nu*)=8.925e-07 ---
+    cloud size=100  usable=100  c(eps) = inf I/(J-J*) = 5.4638
+
+--- eps=0.2:  J*=0.266788  I_h(nu*)=2.304e-07 ---
+    cloud size=100  usable=100  c(eps) = inf I/(J-J*) = 2.1901
+
+--- eps=0.1:  J*=0.258958  I_h(nu*)=5.766e-08 ---
+    cloud size=100  usable=100  c(eps) = inf I/(J-J*) = 1.0995
+
+--- eps=0.05:  J*=0.249019  I_h(nu*)=1.207e-08 ---

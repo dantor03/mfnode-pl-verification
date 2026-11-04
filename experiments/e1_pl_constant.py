@@ -47,9 +47,18 @@ def main(problem_name, grid_name, seed=0, only_eps=None):
     else:
         ckpts = load_all_eps(problem_name, grid_name)
     log_nu_inf = None
-    records = []
+    # resume: keep the eps already completed in a previous (interrupted) run
+    out_json = RESULTS / f"e1_{problem_name}_{grid_name}.json"
+    records = json.loads(out_json.read_text()) if out_json.exists() else []
+    n_expected = len(DELTAS) * N_PER_DELTA * 2
+    done = {e for e in {r["eps"] for r in records}
+            if sum(r["eps"] == e for r in records) >= n_expected}
+    records = [r for r in records if r["eps"] in done]
 
     for eps, d in ckpts.items():
+        if eps in done:
+            print(f"--- eps={eps}: already in {out_json.name}, skipping ---")
+            continue
         nu_star, A = d["nu"], d["A"]
         K = nu_star.shape[0] - 1
         dt = T / K
@@ -82,7 +91,6 @@ def main(problem_name, grid_name, seed=0, only_eps=None):
             print("    no usable points (I not >> I_star) — refine schedule",
                   flush=True)
         # crash-safe: dump everything accumulated so far after each eps
-        out_json = RESULTS / f"e1_{problem_name}_{grid_name}.json"
         with open(out_json, "w") as fh:
             json.dump(records, fh, indent=1)
 

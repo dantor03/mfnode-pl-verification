@@ -1,0 +1,16 @@
+
+##### moons_noise0.08 #####
+  eps=0.5: iters=25 conv=True diffTV/omega=4.3e-04 accuracy=0.698
+  eps=0.2: iters=26 conv=True diffTV/omega=4.1e-04 accuracy=0.720
+  eps=0.1: iters=27 conv=True diffTV/omega=4.9e-04 accuracy=0.780
+  eps=0.05: iters=40 conv=True diffTV/omega=4.5e-04 accuracy=0.828
+  eps=0.1: c = 0.6361423814324493  (30/30 admissible)
+/Users/danieltorres/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+[0.00019591]
+not reaching the requested tolerance 0.0001.
+Use iteration 298 instead with accuracy 
+0.0001959143758270663.
+
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+  eps=0.1: lambda_min = 1.4530e-01
+  eps=0.05: c = 0.3466392123552169  (30/30 admissible)
