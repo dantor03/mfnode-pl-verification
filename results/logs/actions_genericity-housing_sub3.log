@@ -1,0 +1,22 @@
+
+##### housing_sub3 #####
+  eps=0.5: checkpoint found
+  eps=0.2: checkpoint found
+  eps=0.1: checkpoint found
+  eps=0.05: checkpoint found
+  eps=0.1: c = 0.5389045316954997  (30/30 admissible)
+  eps=0.1: lambda_min = 2.3447e-01
+  eps=0.05: c = 0.27322118175078286  (30/30 admissible)
+/home/runner/work/mfnode-pl-verification/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+[0.00614263]
+not reaching the requested tolerance 0.0001.
+Use iteration 154 instead with accuracy 
+0.001351779745920727.
+
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+/home/runner/work/mfnode-pl-verification/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+[0.00135088]
+not reaching the requested tolerance 0.0001.
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+  eps=0.05: lambda_min = 1.3375e-01
+-> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/results/genericity.json
