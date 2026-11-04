@@ -1,0 +1,66 @@
+# Re-solves the eigenvalues whose LOBPCG run stopped at the 300-iteration
+# budget with a large residual, with a larger budget and the residual
+# printed.  Same commit-back scheme as compute-housing.yml.
+name: compute (eigenvalues)
+
+on:
+  push:
+    branches: [compute-housing]
+    paths: [".github/workflows/compute-eig.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: relam-moons_seed0-eps0.05
+            cmd: python experiments/13_genericity.py --relam 0 --eps 0.05 --maxiter 1500
+          - name: relam-moons_noise0.08-eps0.05
+            cmd: python experiments/13_genericity.py --relam 5 --eps 0.05 --maxiter 1500
+          - name: relam-moons_base-eps0.05
+            cmd: python experiments/13_genericity.py --relam 12 --eps 0.05 --maxiter 1500
+          - name: relam-moons_base-eps0.1
+            cmd: python experiments/13_genericity.py --relam 12 --eps 0.1 --maxiter 1500
+          - name: e3-moons-pilotflow-eps0.02-long
+            cmd: python experiments/e3_hessian.py --problem moons --grid pilotflow --eps 0.02 --maxiter 1200
+          - name: e3-housing-pilotflow-eps0.02-long
+            cmd: python experiments/e3_hessian.py --problem housing --grid pilotflow --eps 0.02 --maxiter 1200
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: pip install -e .
+      - uses: actions/cache@v4
+        with:
+          path: ~/scikit_learn_data
+          key: sklearn-data-california-housing
+      - name: Run
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: |
+          set -o pipefail
+          ${{ matrix.cmd }} 2>&1 | tee "results/logs/actions_${{ matrix.name }}.log"
+      - name: Commit results to this branch
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Actions: ${{ matrix.name }}"
+          for i in 1 2 3 4 5 6 7 8; do
+            git pull -q --rebase origin compute-housing && git push -q origin HEAD:compute-housing && exit 0
+            sleep $((RANDOM % 30 + 10))
+          done
+          exit 1

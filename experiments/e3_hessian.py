@@ -7,6 +7,12 @@ Includes the internal checks: symmetry of H and the Pontryagin coherence
 Usage:
     python experiments/e3_hessian.py --problem moons --grid pilot --eps 0.05
     python experiments/e3_hessian.py --problem moons --grid pilot --all-eps
+    python experiments/e3_hessian.py --problem moons --grid pilotflow \
+        --eps 0.02 --maxiter 1200
+
+The residual |H v - lambda v| of the returned vector is printed: lambda is a
+Rayleigh quotient, hence an upper bound for lambda_min, and lies within the
+residual of an eigenvalue.
 """
 import argparse
 import json
@@ -20,7 +26,7 @@ from plnode.solver import EPS_SCHEDULE
 
 
 def one_eps(problem_name, grid_name, eps, *, h=1e-5, tol=1e-4, checks=True,
-            support_threshold=1e-6):
+            support_threshold=1e-6, maxiter=300):
     """lambda_min at nu*_eps.
 
     support_threshold: restrict the operator to nodes carrying mass on every
@@ -57,10 +63,12 @@ def one_eps(problem_name, grid_name, eps, *, h=1e-5, tol=1e-4, checks=True,
               f"(ratio {quad/excess:.3f})", flush=True)
 
     t0 = time.time()
-    vals, _ = hessian.lambda_min_lobpcg(op, k=1, tol=tol)
-    lam = float(vals[0])
-    print(f"  lambda_min = {lam:.6e}   "
-          f"({op.n_products()} Hv products, {time.time()-t0:.0f}s)", flush=True)
+    vals, vecs = hessian.lambda_min_lobpcg(op, k=1, tol=tol, maxiter=maxiter)
+    lam, vec = float(vals[0]), vecs[:, 0]
+    n_hv = op.n_products()
+    resid = float(np.linalg.norm(op @ vec - lam * vec) / np.linalg.norm(vec))
+    print(f"  lambda_min = {lam:.6e}   residual = {resid:.1e}   "
+          f"({n_hv} Hv products, {time.time()-t0:.0f}s)", flush=True)
     return lam
 
 
@@ -70,7 +78,8 @@ def main(args):
     for eps in eps_list:
         print(f"\n=== lambda_min at eps={eps} "
               f"({args.problem}/{args.grid}) ===")
-        out[eps] = one_eps(args.problem, args.grid, eps, h=args.h)
+        out[eps] = one_eps(args.problem, args.grid, eps, h=args.h,
+                           maxiter=args.maxiter)
     path = RESULTS / f"e3_lambda_min_{args.problem}_{args.grid}.json"
     existing = {}
     if path.exists():
@@ -87,4 +96,5 @@ if __name__ == "__main__":
     ap.add_argument("--eps", type=float, default=0.05)
     ap.add_argument("--all-eps", action="store_true")
     ap.add_argument("--h", type=float, default=1e-5)
+    ap.add_argument("--maxiter", type=int, default=300)
     main(ap.parse_args())

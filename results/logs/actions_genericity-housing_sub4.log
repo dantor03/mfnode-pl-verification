@@ -7,7 +7,7 @@
   eps=0.1: c = 0.5391023876604627  (30/30 admissible)
   eps=0.1: lambda_min = 2.4683e-01
   eps=0.05: c = 0.2746929598136336  (30/30 admissible)
-/home/runner/work/mfnode-pl-verification/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
 [0.00020002]
 not reaching the requested tolerance 0.0001.
 Use iteration 296 instead with accuracy 
@@ -15,4 +15,4 @@ Use iteration 296 instead with accuracy
 
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
   eps=0.05: lambda_min = 1.0910e-01
--> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/results/genericity.json
+-> results/genericity.json

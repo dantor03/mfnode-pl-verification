@@ -5,18 +5,18 @@
   eps=0.1: checkpoint found
   eps=0.05: checkpoint found
   eps=0.1: c = 0.5396674324119948  (30/30 admissible)
-/home/runner/work/mfnode-pl-verification/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
 [0.00282853]
 not reaching the requested tolerance 0.0001.
 Use iteration 249 instead with accuracy 
 0.000366720574542893.
 
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
-/home/runner/work/mfnode-pl-verification/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
 [0.00036672]
 not reaching the requested tolerance 0.0001.
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
   eps=0.1: lambda_min = 2.4945e-01
   eps=0.05: c = 0.27544591832085286  (30/30 admissible)
   eps=0.05: lambda_min = 1.1270e-01
--> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/results/genericity.json
+-> results/genericity.json

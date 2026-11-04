@@ -12,7 +12,11 @@ drawn data set should fall in O.  For each data variant:
 
 Variants: moons with sampling seeds 0-4 (noise 0.12) and noise 0.08 / 0.16
 (seed 42); housing with training subsamples 0-4 and the features fixed to
-(MedInc, AveOccup) so that only the sample changes.
+(MedInc, AveOccup) so that only the sample changes.  The last variant,
+moons_base, is the reference data of the other experiments (seed 42, noise
+0.12) run through the same probe: on the pilot grid with this 30-point cloud
+c(eps) is not on the scale of E1 (asymmetric grid), so the variants are
+compared with it rather than with E1.
 
 Results are appended per variant to results/genericity.json (crash-safe,
 resumable); checkpoints go to results/genericity/.  Variants are independent,
@@ -22,6 +26,13 @@ Usage:
     python experiments/13_genericity.py --list
     python experiments/13_genericity.py --variant 0 1 2
     python experiments/13_genericity.py --all
+    python experiments/13_genericity.py --relam 0 --eps 0.05 --maxiter 1500
+
+--relam re-solves lambda_min at one eps from the saved checkpoint with a
+larger LOBPCG iteration budget and records the residual norm
+|H v - lambda v| (the Rayleigh quotient is an upper bound for lambda_min and
+lies within the residual of an eigenvalue).  The result goes to
+results/genericity_parts/relam-<tag>-eps<eps>.json.
 """
 import argparse
 import json
@@ -49,6 +60,8 @@ VARIANTS = (
             noise=n) for n in (0.08, 0.16)]
     + [dict(tag=f"housing_sub{s}", problem="housing", seed=s)
        for s in range(5)]
+    + [dict(tag="moons_base", problem="moons", seed=datasets.SEED,
+            noise=0.12)]
 )
 
 
@@ -154,6 +167,30 @@ def run_variant(v, with_hessian=True):
     return rec
 
 
+def relam(i, eps, maxiter):
+    v = VARIANTS[i]
+    prob = build_problem(v)
+    A, _ = solver.build_grid(GRIDS[GRID], R=R_GRID)
+    nu_star = np.load(OUT_DIR / f"{v['tag']}_eps{eps:g}.npz")["nu"]
+    t0 = time.time()
+    op = hessian.hessian_operator(nu_star, prob["x0"], prob["y"], A, d1=2,
+                                  eps=eps, T=T, grad_fn=prob["grad_fn"],
+                                  support_threshold=1e-6)
+    vals, vecs = hessian.lambda_min_lobpcg(op, k=1, tol=1e-4,
+                                           maxiter=maxiter)
+    lam, vec = float(vals[0]), vecs[:, 0]
+    resid = float(np.linalg.norm(op @ vec - lam * vec) / np.linalg.norm(vec))
+    out = dict(tag=v["tag"], eps=eps, lambda_min=lam, residual=resid,
+               hv_products=op.n_products(), maxiter=maxiter,
+               seconds=time.time() - t0)
+    print(f"  {v['tag']} eps={eps}: lambda_min = {lam:.4e}  "
+          f"residual = {resid:.1e}  ({out['hv_products']} Hv)", flush=True)
+    path = RESULTS / "genericity_parts" / f"relam-{v['tag']}-eps{eps:g}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(out, indent=1))
+    print(f"-> {path}", flush=True)
+
+
 def main(indices, with_hessian=True):
     records = json.loads(OUT_JSON.read_text()) if OUT_JSON.exists() else {}
     for i in indices:
@@ -175,8 +212,13 @@ if __name__ == "__main__":
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--no-hessian", action="store_true")
+    ap.add_argument("--relam", type=int, metavar="VARIANT")
+    ap.add_argument("--eps", type=float, default=0.05)
+    ap.add_argument("--maxiter", type=int, default=1500)
     a = ap.parse_args()
-    if a.list:
+    if a.relam is not None:
+        relam(a.relam, a.eps, a.maxiter)
+    elif a.list:
         for i, v in enumerate(VARIANTS):
             print(i, v["tag"])
     else:

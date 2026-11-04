@@ -22,6 +22,7 @@ is about.
 Usage:
     python experiments/14_jacobi.py --problem moons --eps 0.05
     python experiments/14_jacobi.py --problem moons --eps 0.05 --no-hessian
+    python experiments/14_jacobi.py --problem moons --eps 0.05 --plot-only
 """
 import argparse
 import json
@@ -94,26 +95,48 @@ def main(problem_name, eps, grid_name="pilot", k1_list=K1_LIST,
 
     print(f"\n-> {out_json}")
 
-    lam = [(r["t1"], r["lambda_min"]) for r in records if "lambda_min" in r]
-    if lam:
-        # t1 = 0: the full problem (E3), if available
-        e3 = RESULTS / f"e3_lambda_min_{problem_name}_{grid_name}.json"
-        if e3.exists():
-            full = json.loads(e3.read_text()).get(str(eps))
-            if full is not None:
-                lam.append((0.0, float(full)))
-        lam.sort()
-        fig, ax = plt.subplots(figsize=(4.6, 3.6))
-        ax.plot([x for x, _ in lam], [y for _, y in lam], "o-")
-        ax.set_xlabel(r"restart layer $t_1$")
-        ax.set_ylabel(r"$\lambda_{\min}$ of the problem on $[t_1,T]$")
-        ax.set_title(rf"Jacobi condition, {problem_name}, $\varepsilon$={eps}")
-        ax.grid(alpha=0.3)
-        fig.tight_layout()
-        out = FIG_DIR / f"jacobi_{problem_name}_eps{eps:g}.png"
-        fig.savefig(out, dpi=150)
-        print(f"-> {out}")
+    plot(problem_name, eps, grid_name, records)
     return records
+
+
+def plot(problem_name, eps, grid_name, records):
+    """Two panels: uniqueness (TV to the restriction) and stability."""
+    records = sorted(records, key=lambda r: r["t1"])
+    fig, (ax_tv, ax_lam) = plt.subplots(1, 2, figsize=(8.4, 3.3))
+    t1 = [r["t1"] for r in records]
+    ax_tv.semilogy(t1, [r["tv_to_restriction"] for r in records], "o-",
+                   color="#2a78d6")
+    ax_tv.axhline(TOL / OMEGA, color="0.4", ls="--", lw=1)
+    ax_tv.text(0.02, TOL / OMEGA * 1.15, r"tol$/\omega$", color="0.35",
+               fontsize=8, transform=ax_tv.get_yaxis_transform())
+    ax_tv.set_ylim(1e-5, 1e-2)
+    ax_tv.set_ylabel(r"TV to $(\nu^*_t)_{t\geq t_1}$")
+    ax_tv.set_title("(i) uniqueness", fontsize=10)
+
+    lam = [(r["t1"], r["lambda_min"]) for r in records if "lambda_min" in r]
+    e3 = RESULTS / f"e3_lambda_min_{problem_name}_{grid_name}.json"
+    full = json.loads(e3.read_text()).get(str(eps)) if e3.exists() else None
+    if lam:
+        ax_lam.plot([x for x, _ in lam], [y for _, y in lam], "o-",
+                    color="#2a78d6", label=r"restarted on $[t_1,T]$")
+    if full is not None:
+        ax_lam.plot([0.0], [full], "s", color="#eb6834", ms=7,
+                    label=r"full problem ($t_1=0$)")
+    top = max([y for _, y in lam] + ([full] if full is not None else []))
+    ax_lam.set_ylim(0, 1.2 * top)
+    ax_lam.set_ylabel(r"$\lambda_{\min}$")
+    ax_lam.set_title("(ii) stability", fontsize=10)
+    ax_lam.legend(fontsize=8, loc="lower left")
+    for ax in (ax_tv, ax_lam):
+        ax.set_xlabel(r"restart time $t_1$")
+        ax.set_xlim(-0.05, 0.9)
+        ax.grid(alpha=0.3)
+    fig.suptitle(rf"Jacobi condition, {problem_name}, $\varepsilon={eps:g}$",
+                 fontsize=10)
+    fig.tight_layout()
+    out = FIG_DIR / f"jacobi_{problem_name}_eps{eps:g}.png"
+    fig.savefig(out, dpi=200)
+    print(f"-> {out}")
 
 
 if __name__ == "__main__":
@@ -123,6 +146,12 @@ if __name__ == "__main__":
     ap.add_argument("--grid", default="pilot")
     ap.add_argument("--k1", type=int, nargs="+", default=list(K1_LIST))
     ap.add_argument("--no-hessian", action="store_true")
+    ap.add_argument("--plot-only", action="store_true",
+                    help="redraw the figure from the saved JSON")
     a = ap.parse_args()
+    if a.plot_only:
+        path = RESULTS / f"jacobi_{a.problem}_{a.grid}_eps{a.eps:g}.json"
+        plot(a.problem, a.eps, a.grid, json.loads(path.read_text()))
+        raise SystemExit
     main(a.problem, a.eps, grid_name=a.grid, k1_list=a.k1,
          with_hessian=not a.no_hessian)

@@ -52,8 +52,9 @@ inequalities for entropic mean-field Neural ODEs}
 (ICMAT--CSIC), Madrid, Spain}
 \email{dantor03@ucm.es}
 
-\thanks{This work was carried out at ICMAT--CSIC under a JAE Intro
-fellowship (CSIC). \todo{supervisor's name and grant reference.}}
+\thanks{This work was carried out at ICMAT--CSIC under a JAE Intro 2025
+fellowship of CSIC (reference JAEINT\_25\_03361), supervised by Rafael Orive
+Illera.}
 
 \date{\today}
 
@@ -80,15 +81,18 @@ Hessian eigenvalue.  On a classification and a regression benchmark
 ($d_1=2$, five-dimensional parameter space) we test both results of
 Daudin--Delarue as stated.  \emph{Stability and uniqueness:} the fixed point
 is reached from initializations far from it, the projected Hessian is
-positive definite along the whole $\eps$-schedule, \pending{genericity
-across perturbed data and the Jacobi condition}.  \emph{PL inequality:}
+positive definite along the whole $\eps$-schedule, and the Jacobi
+condition holds: the problem restarted from an intermediate layer recovers
+the restriction of the optimum and is itself stable.
+\pending{genericity across perturbed data.}  \emph{PL inequality:}
 every sampled perturbation satisfies it, the gradient descent converges
-exponentially with a rate independent of the initialization, and three
-independent estimators show that the PL constant degenerates essentially
-linearly in $\eps$ ($c(\eps)\propto\eps^{1.06}$,
+exponentially with a rate that does not depend on the initial direction, and
+three independent estimators show that the PL constant degenerates
+essentially linearly in $\eps$ ($c(\eps)\propto\eps^{1.06}$,
 $\hat c(\eps)\propto\eps^{1.20}$ on the classification task,
-\pending{regression exponents}), with a super-linear steepening at the
-smallest $\eps$.  We also find that the loss of convergence of the
+$c(\eps)\propto\eps^{0.99}$ on the regression task), with a super-linear
+steepening at the smallest $\eps$ only on the classification task, where
+the optimal control concentrates.  We also find that the loss of convergence of the
 fixed-point iteration at small $\eps$ is a period-doubling of the damped map
 --- not a loss of stability of $\bnu^*$ --- and that the gradient flow
 recovers the exact fixed point there.
@@ -162,7 +166,7 @@ respectively.  (iii) A picture of the computed optimum and of its
 concentration as $\eps$ decreases (Section~\ref{sec:optimum}).
 (iv) Tests of Meta-Theorem~1.3: independence of the fixed point from the
 initialization, positive definiteness of the Hessian along the schedule,
-\pending{persistence across perturbed data and the Jacobi condition}
+the Jacobi condition, \pending{and persistence across perturbed data}
 (Section~\ref{sec:stability}).  (v) Tests of Meta-Theorem~1.4 and of the
 conjecture: three independent estimators of the PL constant and of its
 degeneration as $\eps\to0^+$ (Section~\ref{sec:pl}).  The implementation
@@ -170,11 +174,15 @@ is open source, with machine-precision correctness tests.
 
 Our headline findings on the classification benchmark: the PL inequality
 holds at every sampled perturbation around $\bnu^*$; the gradient descent
-converges exponentially with a rate independent of the initialization; and
+converges exponentially with a rate that does not depend on the initial
+direction; and
 the PL constant follows $c(\eps)\propto\eps^{1.06}$,
 $\hat c(\eps)\propto\eps^{1.20}$ --- an essentially linear degeneration in
 the entropic intensity, which steepens super-linearly at the smallest $\eps$.
-\pending{one sentence on the regression benchmark once E1--E3 are run.}
+On the regression benchmark, where the optimal control barely
+concentrates, the degeneration is linear with no steepening:
+$c(\eps)\propto\eps^{0.99}$ down to $\eps=0.02$,
+$\hat c(\eps)\propto\eps^{1.04}$ and $\lambda_{\min}(\eps)\propto\eps^{0.94}$.
 
 Section~\ref{sec:framework} recalls the framework,
 Section~\ref{sec:method} describes the numerical method,
@@ -549,7 +557,8 @@ $[J(\bnu^{s+\Delta s})-J(\bnu^s)]/\Delta s\approx-\cI_h(\bnu^s)$.  The
 $O(\Delta s)$ error is negligible already at $\Delta s=10^{-2}$, and the
 residual mismatch is the $O(h^2)$ grid error: at the tiled prior
 ($\eps=0.05$, \emph{moons}) on the grids $m_j\equiv3,5,7$ it is
-$0.206,\,0.042,\,0.021$ ($\mathrm{rel}/h^2\approx0.05$ constant).
+$0.206$, $0.042$ and $0.021$, i.e.\ $\mathrm{rel}/h^2\approx0.05$ on
+every grid.
 
 \subsection{Matrix-free Hessian}
 \label{sec:method-hessian}
@@ -639,20 +648,22 @@ setting of~\cite{DaudinDelarue2025}.
 
 Before testing the theorems on $\bnu^*$ we show the object.
 Figure~\ref{fig:trajectories} displays the trajectories induced by the
-optimal mean field: on \emph{moons} the flow disentangles the two classes
-and pushes them to opposite sides of $x_1=0$; on \emph{housing} it aligns
-the read-out coordinate $x_1$ with the target, using $x_2$ as a free
-auxiliary direction.
+optimal mean field at $\eps=0.05$.  On \emph{moons} the flow pushes most
+of each class toward its anchor, to its side of $x_1=0$ (accuracy $0.82$);
+the entropic cost limits how far the particles travel, and the accuracy
+rises to $0.93$ at $\eps=0.02$ (Section~\ref{sec:e2}(c)).  On
+\emph{housing} the trajectories are short and nearly parallel to $x_1$:
+the field stretches the read-out coordinate along the target
+($R^2_{\mathrm{tr}}=0.54$) and leaves $x_2$ as a free auxiliary
+direction.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=\linewidth]{flow_trajectories.png}
+\includegraphics[width=\linewidth]{optimum_trajectories_asym_eps0.05.png}
 \caption{Trajectories $t\mapsto X_i(t)$ under the optimal mean field
-$\bar b(x,\nu^*_t)$ (asymmetric grid).  Left: \emph{moons}, colored by
-class, filled dot $=X_i(T)$, crosses $=$ anchors $(\pm1,0)$.  Right:
-\emph{housing}, colored by the target.
-\todo{regenerate at $\eps=0.05$ or from the flow-refined $\eps=0.02$
-endpoint: the current figure uses the non-converged $\eps=0.02$ iterate.}}
+$\bar b(x,\nu^*_t)$ at $\eps=0.05$ (asymmetric grid).  Left: \emph{moons},
+colored by class, filled dot $=X_i(T)$, crosses $=$ anchors $(\pm1,0)$.
+Right: \emph{housing}, colored by the target.}
 \label{fig:trajectories}
 \end{figure}
 
@@ -665,7 +676,9 @@ weight space ($b(x,-a)=b(x,a)$), not a cancellation of the field, and the
 activity of the control shows in the even moments.  Second, the control is
 sparse in the axes.  On \emph{moons} the output amplitudes $a_0^{(1)},
 a_0^{(2)}$ and the input weight $a_1^{(2)}$ leave the prior, widening or
-becoming bimodal; $a_1^{(1)}$ and the bias $a_2$ stay close to it.  On
+becoming bimodal; the bias $a_2$ concentrates at zero, more sharply than
+the prior, and $a_1^{(1)}$ departs from the prior only in the first
+layers.  On
 \emph{housing} the activation is much weaker and concentrated on
 $a_0^{(1)}$ and $a_1^{(2)}$, consistent with a nearly linear regression.
 This diagnosis is what motivated the asymmetric grid of
@@ -673,11 +686,11 @@ Section~\ref{sec:method-solver} (more nodes on the active axes).
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=\linewidth]{02_explicit_moons_mse_marginals_asym.png}
-\caption{One-dimensional marginals of $\nu^*_t$ (color $=$ layer time $t$,
-dashed $=$ prior $\nu^\infty$) on the asymmetric grid (\emph{moons}).
-\todo{regenerate at $\eps=0.05$ or from the flow-refined endpoint (current:
-non-converged $\eps=0.02$ iterate).}}
+\includegraphics[width=\linewidth]{optimum_marginals_moons_asym_eps0.05.png}\\[2pt]
+\includegraphics[width=\linewidth]{optimum_marginals_housing_asym_eps0.05.png}
+\caption{One-dimensional marginals of $\nu^*_t$ at $\eps=0.05$ (color $=$
+layer time $t$, dashed $=$ prior $\nu^\infty$) on the asymmetric grid.
+Top: \emph{moons}.  Bottom: \emph{housing}.}
 \label{fig:marginals}
 \end{figure}
 
@@ -696,7 +709,9 @@ $t=0$ remain at $t=T$ for $\eps=0.05$): the optimal network uses different
 neurons at different depths.  The dominant pairs are high-gain directional
 detectors: zero bias, input weights aligned with axes or diagonals, large
 output amplitudes.  On \emph{housing} the concentration is essentially
-insensitive to $\eps$ and the ranking is stable in depth.  This
+insensitive to $\eps$ ($N_{\mathrm{eff}}$ stays between $284$ and $295$ down
+to $\eps=0.02$) and the ranking is largely stable in depth ($7$--$9$ of the
+top-$10$ nodes persist from $t=0$ to $t=T$).  This
 concentration of $\nu^*_\eps$ is the mechanism invoked in
 Section~\ref{sec:heuristic} to interpret the degeneration of the PL constant.
 
@@ -707,19 +722,22 @@ Section~\ref{sec:heuristic} to interpret the degeneration of the PL constant.
 benchmark & $\eps$ & mass of top-$1\%$ & $N_{\mathrm{eff}}$ & $n_{50\%}$ &
 top-$10$ overlap $t=0$ vs $t=T$\\
 \midrule
-\emph{moons}   & 0.5  & 0.33 & 290 & 60 & 10/10\\
-\emph{moons}   & 0.1  & 0.48 & 202 & 35 & 6/10\\
-\emph{moons}   & 0.05 & 0.55 & 145 & 26 & 4/10\\
-\emph{moons}   & 0.02$^\dagger$ & 0.69 & 81 & 17 & 4/10\\
-\emph{housing} & 0.5  & 0.31 & 295 & 62 & 9/10\\
-\emph{housing} & 0.1  & 0.32 & 293 & 61 & 8/10\\
-\emph{housing} & 0.05 & 0.33 & 289 & 61 & 7/10\\
-\emph{housing} & 0.02$^\dagger$ & \pend & \pend & \pend & \pend\\
+\emph{moons}   & 0.5  & 0.33 & 290 & 60 & 7.5/10\\
+\emph{moons}   & 0.1  & 0.48 & 202 & 35 & 6.0/10\\
+\emph{moons}   & 0.05 & 0.55 & 145 & 26 & 4.0/10\\
+\emph{moons}   & 0.02$^\dagger$ & 0.69 & 81 & 17 & 4.0/10\\
+\emph{housing} & 0.5  & 0.31 & 295 & 62 & 9.1/10\\
+\emph{housing} & 0.1  & 0.32 & 293 & 61 & 7.5/10\\
+\emph{housing} & 0.05 & 0.33 & 289 & 61 & 7.3/10\\
+\emph{housing} & 0.02$^\dagger$ & 0.33 & 284 & 61 & 7.0/10\\
 \bottomrule
 \end{tabular}
 \vskip 2pt
 \caption{Concentration of $\bnu^*_\eps$ on the pilot grid ($M=3125$).
-$N_{\mathrm{eff}}=\exp(\text{Shannon entropy of }\bar w)$.
+$N_{\mathrm{eff}}=\exp(\text{Shannon entropy of }\bar w)$.  The
+$a\leftrightarrow-a$ symmetry makes node weights come in exactly equal
+pairs (and, at large $\eps$, larger groups), so the top-$10$ overlap is the
+expected overlap when nodes tied at the cut-off are chosen at random.
 $^\dagger$Flow-refined endpoint (Section~\ref{sec:e2}(c)).}
 \label{tab:concentration}
 \end{table}
@@ -779,9 +797,16 @@ perturbation increases $J$, Section~\ref{sec:e1}) this confirms that the
 fixed points are strict local minima and not saddles.  The $\lambda_{\min}$
 curve is not a clean power law: its local log-log slope steepens from
 $1.32$ ($\eps\in[0.2,0.5]$) to $1.71$ ($\eps\in[0.05,0.1]$), a super-linear
-degeneration discussed in Section~\ref{sec:heuristic}.
-\pending{\emph{housing} $\lambda_{\min}$ at $\eps\in\{0.5,0.1,0.05\}$, and
-\emph{moons} at the flow-refined $\eps=0.02$.}
+degeneration discussed in Section~\ref{sec:heuristic}.  On \emph{housing}
+$\lambda_{\min}=1.06$, $0.440$, $0.236$ and $0.134$ at $\eps=0.5$, $0.2$,
+$0.1$ and $0.05$: strictly positive as well, and degenerating more slowly,
+with slope $0.90$ over $[0.05,0.5]$ (local slopes $0.96$, $0.90$ and $0.82$)
+and no steepening.  At the flow-refined $\eps=0.02$ endpoint
+$\lambda_{\min}=0.0485$, still positive; there LOBPCG stopped at residual
+$5\cdot10^{-3}$ instead of $10^{-4}$, so this value, a Rayleigh quotient, is
+an upper bound for $\lambda_{\min}$ and lies within $0.005$ of an
+eigenvalue.  Including it, the slope is $0.94$.
+\pending{\emph{moons} at the flow-refined $\eps=0.02$.}
 
 \subsection{Genericity: stability under perturbations of the data}
 \label{sec:genericity}
@@ -830,9 +855,27 @@ $(\nu^*_t)_{t\ge t_{k_1}}$ of the full optimum.  The theorem predicts
 that the restarted minimizer is stable, $\lambda_{\min}(t_{k_1})>0$.  We run
 this at $\eps=0.05$ on \emph{moons}.  The trapezoidal weight of the first
 slice of the restarted problem differs from its weight in the full problem;
-we account for it when comparing costs.
-\pending{TV distance between the restarted optimum and the restriction, and
-$\lambda_{\min}(t_{k_1})$ as a function of $t_{k_1}$.}
+the Gibbs fixed point does not depend on the time weights, so this affects
+only the Hessian, which is that of the restarted problem with its own
+quadrature.  Both predictions hold (Figure~\ref{fig:jacobi}).  The four
+restarted problems converge from the prior in $37$--$42$ iterations to the
+restriction of the full optimum, within $\TV=3.5$--$5.5\cdot10^{-4}$, the
+level of the effective tolerance $\mathrm{tol}/\omega=5\cdot10^{-4}$.  Their
+minimizers are stable, with $\lambda_{\min}(t_{k_1})=0.0434$, $0.0433$,
+$0.0433$ and $0.0433$ for $t_{k_1}=0.2$, $0.4$, $0.6$ and $0.8$, against
+$0.0442$ for the full problem: restarting lowers $\lambda_{\min}$ by $2\%$,
+after which it hardly depends on $t_{k_1}$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.85\linewidth]{jacobi_moons_eps0.05.png}
+\caption{Jacobi condition (\emph{moons}, $\eps=0.05$, pilot grid).  Left:
+TV distance (max over layers) between the minimizer of the problem
+restarted at $(t_1,\gamma^*_{t_1})$ and the restriction of the full
+optimum; dashed: effective tolerance.  Right: $\lambda_{\min}$ of the
+restarted problem, and of the full problem at $t_1=0$.}
+\label{fig:jacobi}
+\end{figure}
 
 % ============================================================================
 \section{The PL inequality and the conjectured exponential convergence
@@ -867,17 +910,24 @@ relative entropy $\lambda^2$ ranges over $[1.2\cdot10^{-5},\,0.58]$ across
 the admissible clouds, so $c(\eps)$ estimates the constant of Theorem~5.1
 for entropy-radii up to $r^2\approx0.6$ at these data.  Being an infimum
 over \emph{sampled} directions, $c(\eps)$ is an upper bound for the true
-local constant.
-\pending{\emph{housing} clouds at the five values of $\eps$.}
+local constant.  On \emph{housing} the picture is the same and cleaner.
+Every cloud is fully admissible ($100/100$, also at $\eps=0.02$ against the
+flow-refined endpoint, where $\cI_h(\bnu^*)=1.2\cdot10^{-17}$), every
+perturbation has $J>J^*$, and $c(\eps)=5.46$, $2.19$, $1.10$, $0.555$ and
+$0.227$ at $\eps=0.5$, $0.2$, $0.1$, $0.05$ and $0.02$ lie on a straight line
+of slope $0.99$, with local slopes between $0.98$ and $1.00$: the
+degeneration is linear, with no steepening at small $\eps$
+(Figure~\ref{fig:e1}).
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=\linewidth]{e1_scatter_moons_asym.png}\\[2pt]
-\includegraphics[width=0.5\linewidth]{e1_c_vs_eps_moons_asym.png}
-\caption{E1 (\emph{moons}, asymmetric grid).  Top: $\cI_h$ vs $J-J^*$ for
-the $100$-point perturbation clouds at each $\eps$, with the envelope
-$c(\eps)=\inf\cI_h/(J-J^*)$ (dashed).  Bottom: $c(\eps)$ in log-log with
-the five-point fit, slope $1.06$.  \todo{add the \emph{housing} panels.}}
+\includegraphics[width=\linewidth]{e1_scatter_asym.png}\\[2pt]
+\includegraphics[width=0.5\linewidth]{e1_c_vs_eps_asym.png}
+\caption{E1 (asymmetric grid).  Top: $\cI_h$ vs $J-J^*$ for the $100$-point
+perturbation clouds at each $\eps$ (filled: mixtures, open: tilts; bottom
+right: admissible points), with the envelope $c(\eps)=\inf\cI_h/(J-J^*)$
+(dashed).  At $\eps=0.02$ the reference is the flow-refined endpoint.
+Bottom: $c(\eps)$ in log-log with the least-squares slopes.}
 \label{fig:e1}
 \end{figure}
 
@@ -894,24 +944,40 @@ $\eps\ge0.05$ decays exponentially over $\ge4$ decades before flooring at
 the solver-tolerance level $\sim(\mathrm{diffTV}/\omega)^2$ --- e.g.\ at
 $\eps=0.05$ the gap falls from $1.6\cdot10^{-2}$ to $4\cdot10^{-7}$ ---, and
 the floor itself confirms that the flow equilibrates at $\bnu^*$ within the
-solver tolerance.
+solver tolerance.  The decay is at least exponential but not a single
+exponential: within every fit window the first half decays $1.3$--$1.8$
+times faster than the second, as expected when the faster directions die
+out first and the slowest one takes over.  The local rate stays bounded
+away from zero down to the floor, which is what the PL inequality
+asserts.
 
-\emph{(b) The rate is a property of the minimizer, not of the
-initialization.}  Across the $9$ (amplitude, seed) combinations the fitted
-rates agree to a few percent (e.g.\ $\eps=0.1$, $\delta=0.1$:
-$\hat c=0.5994,0.5996,0.6009$ over the three seeds); this insensitivity to
-the initial direction is the PL phenomenon.  The medians follow
+\emph{(b) The rate is a property of the minimizer, not of the initial
+direction.}  At fixed amplitude the three seeds give the same rate to
+better than $1\%$ in $10$ of the $15$ $(\eps,\delta)$ cells, and to $11\%$
+in the worst (e.g.\ $\eps=0.1$, $\delta=0.1$: $\hat c=0.5994,0.5996,0.6009$);
+this insensitivity to the initial direction is the PL phenomenon.  The
+amplitude does matter: at every $\eps$ the rate at $\delta=0.02$ exceeds
+the rate at $\delta=0.1$ by a factor $1.2$--$1.8$.  This is the transient
+of (a), not a distance effect: a descent started farther away spends more
+of its fit window in the regime governed by the slowest direction, so its
+fitted rate is lower.  A PL constant that weakens away from $\bnu^*$ would
+instead make the decay accelerate as the gap closes, the opposite of what
+we see.  The medians follow
 \begin{equation}
 \hat c(\eps)\;\propto\;\eps^{\,1.20}\quad(\eps\in[0.02,0.5]),
 \qquad
-\hat c/c\in[0.47,0.74]\ \text{decreasing in }\eps^{-1}.
+\hat c/c\in[0.47,0.74],
 \end{equation}
-The ratio $\hat c/c<1$ is expected: the cloud envelope of E1 over-estimates
-the true constant, whereas the descent automatically finds the slowest
-direction.  At the recovered endpoint $\eps=0.02$ the fitted rate acquires a
-mild amplitude dependence ($\hat c=0.095$ at $\delta=0.02$ vs $0.063$ at
-$\delta=0.1$, a spread absent at larger $\eps$) --- a first sign that the PL
-neighborhood itself shrinks with $\eps$, the question E4 addresses.
+and the exponent hardly depends on the amplitude ($1.17$, $1.20$ and $1.26$
+for $\delta=0.02$, $0.05$ and $0.1$ separately).  The ratio $\hat c/c$
+decreases from $0.74$ at $\eps=0.5$ to $0.47$ at $\eps=0.05$ ($0.50$ at
+$\eps=0.02$).  That it is below one is expected: the cloud envelope of E1
+over-estimates the true constant, whereas the descent automatically finds
+the slowest direction.  At the recovered endpoint $\eps=0.02$ the amplitude
+factor ($\hat c=0.095$ at $\delta=0.02$ vs $0.063$ at $\delta=0.1$, i.e.\
+$1.5$) is within the range seen at larger $\eps$, so E2 gives no sign that
+the PL neighborhood shrinks with $\eps$; E4 addresses that question
+directly.
 
 \emph{(c) The non-converged endpoint undershoots --- and the flow repairs
 it.}  At $\eps=0.02$ every descent drives $J$ \emph{below}
@@ -934,12 +1000,25 @@ pipeline at small $\eps$.  Figure~\ref{fig:e2} shows the decay curves.
 suggest that the control itself should converge exponentially
 (cf.~\cite{monmarche2024local}).  Along the same descents we record the
 integrated relative entropy $\int\cE(\nu^s_t|\nu^*_t)\dd t$, the very
-distance in which Theorem~5.1 measures the PL neighborhood.
-\pending{decay curves of $\int\cE(\nu^s_t|\nu^*_t)\dd t$ and their fitted
-rates, compared with $\hat c(\eps)$.}
+distance in which Theorem~5.1 measures the PL neighborhood.  At
+$\eps\in\{0.5,0.2\}$, where it was recorded on both benchmarks, it decays
+exponentially at the same rate as the cost: the median fitted rates are
+$4.13$ and $1.54$ on \emph{moons} (against $\hat c=4.12$ and $1.41$) and
+$3.97$ and $1.61$ on \emph{housing} (against $3.98$ and $1.55$), ratios
+between $1.00$ and $1.09$.  Since $J-J^*$ and the integrated entropy are
+both quadratic in $\bnu-\bnu^*$ near the minimizer, equal rates are what
+exponential convergence of the control itself predicts.
+\pending{the entropy decay at $\eps\le0.1$.}
 
-\pending{\emph{housing} descents at the five values of $\eps$ (and
-flow-refined $\eps=0.02$ endpoint).}
+On \emph{housing} the descents behave as on \emph{moons}: median rates
+$\hat c=3.98$, $1.55$, $0.743$ and $0.365$ at $\eps=0.5$, $0.2$, $0.1$ and
+$0.05$, seeds agreeing to better than $0.15\%$ in $9$ of the $12$
+$(\eps,\delta)$ cells (within $2\%$ in two of the others, $18\%$ in one cell
+at $\eps=0.2$), and an amplitude factor between $1.19$ and $1.34$.  The
+medians follow $\hat c\propto\eps^{1.04}$, closer to linear than on
+\emph{moons}, and $\hat c/c$ decreases only mildly, from $0.73$ at $\eps=0.5$
+to $0.66$ at $\eps=0.05$.
+\pending{\emph{housing} descents at the flow-refined $\eps=0.02$ endpoint.}
 
 \begin{figure}[ht]
 \centering
@@ -962,11 +1041,12 @@ dips mildly around $\delta\approx0.1$--$0.2$ and \emph{increases} again
 for $\delta\ge0.5$ --- and not a single perturbation falls below
 $c(0.05)$.  Within this perturbation family the local PL inequality is, in
 practice, global at moderate $\eps$: the entropy radius $r$ exceeds
-everything we can reach with $\TV\le0.9$ ($\lambda^2$ up to $7.2$).  The
-only observed signature of a finite PL neighborhood is at the other end of
-the schedule, the amplitude dependence of $\hat c(0.02)$ in E2(b),
-suggesting that the radius shrinks with $\eps$ together with the constant.
-The caveat is plain: one perturbation family, one $\eps$.
+everything we can reach with $\TV\le0.9$ ($\lambda^2$ up to $7.2$).  Nor
+does E2 show a finite neighborhood: the amplitude dependence of $\hat c$ is
+present at every $\eps$, is no stronger at $\eps=0.02$, and goes the wrong
+way for one (Section~\ref{sec:e2}(b)).  Whether the radius shrinks with
+$\eps$ is therefore open.  The caveat is plain: one perturbation family,
+one $\eps$.
 
 \subsection{The degeneration picture}
 \label{sec:degeneration}
@@ -979,21 +1059,24 @@ The caveat is plain: one perturbation family, one $\eps$.
 $\eps$ & $c$ (E1) & $\hat c$ (E2) & $\lambda_{\min}$ (E3)
        & $c$ (E1) & $\hat c$ (E2) & $\lambda_{\min}$ (E3)\\
 \midrule
-0.5  & 5.54 & 4.12 & 1.233  & \pend & \pend & \pend\\
-0.2  & 2.31 & 1.41 & 0.368  & \pend & \pend & \pend\\
-0.1  & 1.28 & 0.70 & 0.144  & \pend & \pend & \pend\\
-0.05 & 0.70 & 0.33 & 0.0442 & \pend & \pend & \pend\\
-0.02$^\dagger$ & 0.159 & 0.080 & \pend & \pend & \pend & \pend\\
+0.5  & 5.54 & 4.12 & 1.233  & 5.46 & 3.98 & 1.062\\
+0.2  & 2.31 & 1.41 & 0.368  & 2.19 & 1.55 & 0.440\\
+0.1  & 1.28 & 0.70 & 0.144  & 1.10 & 0.743 & 0.236\\
+0.05 & 0.70 & 0.33 & 0.0442 & 0.555 & 0.365 & 0.134\\
+0.02$^\dagger$ & 0.159 & 0.080 & \pend & 0.227 & \pend & 0.0485$^\ddagger$\\
 \midrule
-log-log slope & 1.06 & 1.20 & 1.43 & \pend & \pend & \pend\\
+log-log slope & 1.06 & 1.20 & 1.43 & 0.99 & 1.04 & 0.94\\
 \bottomrule
 \end{tabular}
 \vskip 2pt
 \caption{The three estimators of the PL degeneration (E1 on the asymmetric
 grid; E2, E3 on the pilot grid; $\hat c$ is the median of $9$ descents).
-Slopes over the full schedule ($\lambda_{\min}$: four points).
+Slopes over the computed values.
 $^\dagger$Relative to the flow-refined endpoint ($99/100$ admissible cloud
-points; the non-converged iterate admits none).}
+points on \emph{moons}, $100/100$ on \emph{housing}; the non-converged
+iterate admits none on \emph{moons}).
+$^\ddagger$LOBPCG residual $5\cdot10^{-3}$ (tolerance $10^{-4}$ elsewhere):
+a Rayleigh-quotient upper bound.}
 \label{tab:estimators}
 \end{table}
 
@@ -1004,14 +1087,18 @@ in $\eps$ that the authors flag as an open direction.
 Figure~\ref{fig:star} superposes the three estimators in log-log.
 $\lambda_{\min}(\eps)$ --- which lives in a different (Euclidean,
 grid-dependent) normalization and sits an order of magnitude below ---
-degenerates faster (slope $1.43$) and shares with $c$ and $\hat c$ the
-super-linear steepening at the smallest $\eps$.
+degenerates faster on \emph{moons} (slope $1.43$) and shares with $c$
+and $\hat c$ the super-linear steepening at the smallest $\eps$.  On
+\emph{housing} the degeneration is linear without steepening:
+$c\propto\eps^{0.99}$ down to $\eps=0.02$, $\hat c\propto\eps^{1.04}$ and
+$\lambda_{\min}\propto\eps^{0.94}$.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.62\linewidth]{star_moons_asym.png}
-\caption{The three independent estimators of the PL degeneration in log-log
-(\emph{moons}).  \todo{\emph{housing} overlay.}}
+\includegraphics[width=\linewidth]{star_asym.png}
+\caption{The three independent estimators of the PL degeneration in log-log,
+with least-squares slopes; the band is the min--max of the nine descents of
+E2.  Left: \emph{moons}.  Right: \emph{housing}.}
 \label{fig:star}
 \end{figure}
 
@@ -1053,7 +1140,9 @@ constants of $\nu^*_\eps$ itself, i.e.\ how the concentration of the Gibbs
 measure (Table~\ref{tab:concentration}) competes with the vanishing
 prefactor.  This is consistent with the steepening being visible on
 \emph{moons}, where $\nu^*_\eps$ concentrates markedly as $\eps$ decreases,
-\pending{and with the behavior on \emph{housing}, where it does not.}  The
+and with the behavior on \emph{housing}, where it does not: there the
+local slopes of $c(\eps)$ stay between $0.98$ and $1.00$ down to
+$\eps=0.02$, as predicted for $\rho(\bnu^*_\eps)=O(1)$.  The
 same expansion predicts $\lambda_{\min}(\eps)\propto\eps$ for the entropic
 block of the Hessian, up to the grid-dependent Euclidean normalization;
 only the \emph{slope} of $\lambda_{\min}(\eps)$ is comparable across
@@ -1096,7 +1185,11 @@ expected to improve when $\gamma_0\in\cO$), and the approximation of
 $\bnu^*$ by networks with finitely many neurons.
 
 \subsection*{Acknowledgments}
-\todo{JAE Intro programme (CSIC), ICMAT, supervisor.}
+The author thanks Rafael Orive Illera for supervising this work, which
+was carried out at ICMAT within the JAE Intro training plan ``Neural ODEs y
+Machine Learning'' (JAEINT25\_EX\_1604).  Funding: JAE Intro 2025
+fellowship of the Spanish National Research Council (CSIC), reference
+JAEINT\_25\_03361.
 
 % ============================================================================
 \appendix
@@ -1167,8 +1260,8 @@ All code, frozen $\bnu^*$ checkpoints and experiment outputs are available
 at \url{https://github.com/dantor03/mfnode-pl-verification}
 \todo{tag the submission commit}.  The library is pure Python
 ($\ge3.10$) on \texttt{numpy}/\texttt{scipy}/\texttt{scikit-learn}; no GPU
-is used.  The correctness suite (\texttt{pytest tests/}, $18$ tests,
-$\approx4$\,s) covers every structural property quoted in
+is used.  The correctness suite (\texttt{pytest tests/}, $21$ tests,
+under a minute) covers every structural property quoted in
 Section~\ref{sec:method-tests}.
 
 \subsection*{Data}
@@ -1179,7 +1272,11 @@ standardized; labels embedded as anchors $(\pm1,0)$.
 ($400$ train, $200$ test, split seed $42$), features and target
 standardized, restricted to the two features with largest
 $|\mathrm{corr}|$ with the target on the train split (MedInc, AveOccup).
-\pending{seeds, noise levels and subsamples of the genericity probe.}
+Genericity probe (Section~\ref{sec:genericity}): \emph{moons} with
+sampling seeds $0$--$4$ at noise $0.12$, and seed $42$ at noise $0.08$ and
+$0.16$; \emph{housing} with subsample and split seeds $0$--$4$ ($600$ rows,
+$400$ train), the two features fixed to MedInc and AveOccup so that only
+the sample changes.
 
 \subsection*{Hyperparameters}
 \begin{center}\small

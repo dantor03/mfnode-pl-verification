@@ -33,17 +33,17 @@
     Hv products: 280
     Hv products: 290
     Hv products: 300
-/home/runner/work/mfnode-pl-verification/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
 [0.0135164]
 not reaching the requested tolerance 0.0001.
 Use iteration 300 instead with accuracy 
 0.008741129974629443.
 
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
-/home/runner/work/mfnode-pl-verification/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
 [0.00289242]
 not reaching the requested tolerance 0.0001.
   vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
   lambda_min = 9.539353e-03   (308 Hv products, 3114s)
 
--> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/results/e3_lambda_min_moons_pilotflow.json
+-> results/e3_lambda_min_moons_pilotflow.json

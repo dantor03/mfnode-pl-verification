@@ -10,4 +10,4 @@
     Hv products: 50
   lambda_min = 4.397185e-01   (59 Hv products, 394s)
 
--> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/results/e3_lambda_min_housing_pilot.json
+-> results/e3_lambda_min_housing_pilot.json

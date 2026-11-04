@@ -1,0 +1,9 @@
+
+##### moons_base #####
+  eps=0.5: iters=25 conv=True diffTV/omega=4.2e-04 accuracy=0.698
+  eps=0.2: iters=26 conv=True diffTV/omega=4.1e-04 accuracy=0.725
+  eps=0.1: iters=27 conv=True diffTV/omega=4.8e-04 accuracy=0.777
+  eps=0.05: iters=39 conv=True diffTV/omega=4.4e-04 accuracy=0.818
+  eps=0.1: c = 0.636427332167882  (30/30 admissible)
+  eps=0.05: c = 0.34314958788847727  (30/30 admissible)
+-> results/genericity.json

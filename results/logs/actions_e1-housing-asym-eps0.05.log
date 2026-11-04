@@ -2,6 +2,6 @@
 --- eps=0.05:  J*=0.249019  I_h(nu*)=1.207e-08 ---
     cloud size=100  usable=100  c(eps) = inf I/(J-J*) = 0.5553
 
--> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/results/e1_housing_asym.json
--> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/paper/figures/e1_scatter_housing_asym.png
--> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/paper/figures/e1_c_vs_eps_housing_asym.png  (degeneration exponent ~ 0.99)
+-> results/e1_housing_asym.json
+-> paper/figures/e1_scatter_housing_asym.png
+-> paper/figures/e1_c_vs_eps_housing_asym.png  (degeneration exponent ~ 0.99)

@@ -8,6 +8,6 @@ J* = 0.60241464  (eps=0.1, moons/pilot)
   delta=0.100 seed=0  c-hat = 0.5994  KL rate = 0.5710  (mass_err=4.4e-16)
   delta=0.100 seed=1  c-hat = 0.5996  KL rate = 0.5709  (mass_err=4.4e-16)
   delta=0.100 seed=2  c-hat = 0.6009  KL rate = 0.5714  (mass_err=4.4e-16)
--> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/paper/figures/e2_descent_moons_eps0.1.png
--> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/paper/figures/e2_kl_moons_eps0.1.png
--> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/results/e2_moons_eps0.1.json
+-> paper/figures/e2_descent_moons_eps0.1.png
+-> paper/figures/e2_kl_moons_eps0.1.png
+-> results/e2_moons_eps0.1.json

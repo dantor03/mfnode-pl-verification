@@ -3,11 +3,14 @@
 Three independent estimators of the same degeneration as eps -> 0+; if they
 collapse onto a common power law, that is the central result of the paper.
 
-Reads the JSON outputs of E1 (c), E2 (c-hat, one JSON per eps) and E3
-(lambda_min) and overlays them in log-log.
+Reads the JSON outputs of E1 (c; the flow-refined cloud replaces its eps, see
+fig_e1.py), E2 (c-hat, one JSON per eps; at eps = 0.02 relative to the
+flow-refined endpoint) and E3 (lambda_min on the pilot grid, plus the
+flow-refined endpoint when it exists), and overlays them in log-log, one
+panel per benchmark.
 
 Usage:
-    python experiments/fig_star.py --problem moons --grid asym
+    python experiments/fig_star.py --grid asym
 """
 import argparse
 import json
@@ -15,24 +18,19 @@ import json
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import numpy as np
 
 from common import FIG_DIR, RESULTS
+from fig_e1 import c_of_eps, plain_log_ticks
 from plnode.solver import EPS_SCHEDULE
+
+PROBLEMS = ("moons", "housing")
+COLORS = {"c": "#2a78d6", "chat": "#eb6834", "lam": "#1baf7a"}
 
 
 def load_c_of_eps(problem, grid):
-    path = RESULTS / f"e1_{problem}_{grid}.json"
-    if not path.exists():
-        return {}
-    records = json.loads(path.read_text())
-    out = {}
-    for eps in sorted({r["eps"] for r in records}):
-        rs = [r for r in records
-              if r["eps"] == eps and r["J_gap"] > 0 and r["I"] > 10 * r["I_star"]]
-        if rs:
-            out[eps] = min(r["I"] / r["J_gap"] for r in rs)
-    return out
+    return c_of_eps(problem, grid)
 
 
 def load_chat_of_eps(problem):
@@ -48,49 +46,69 @@ def load_chat_of_eps(problem):
     return out
 
 
-def load_lambda_min(problem, grid):
-    path = RESULTS / f"e3_lambda_min_{problem}_{grid}.json"
-    if not path.exists():
-        return {}
-    return {float(k): v for k, v in json.loads(path.read_text()).items()}
+def load_lambda_min(problem, grid="pilot"):
+    out = {}
+    for g in (grid, f"{grid}flow"):
+        path = RESULTS / f"e3_lambda_min_{problem}_{g}.json"
+        if path.exists():
+            out.update({float(k): v for k, v in
+                        json.loads(path.read_text()).items()})
+    return out
 
 
-def main(problem, grid):
+def slope(d):
+    e = np.array(sorted(d))
+    return float(np.polyfit(np.log(e), np.log([d[x] for x in e]), 1)[0])
+
+
+def panel(ax, problem, grid):
     c = load_c_of_eps(problem, grid)
     chat = load_chat_of_eps(problem)
-    lam = load_lambda_min(problem, grid)
-    if not (c or chat or lam):
-        raise SystemExit("no E1/E2/E3 results found — run those first")
-
-    fig, ax = plt.subplots(figsize=(5.6, 4.4))
+    lam = load_lambda_min(problem)
     if c:
         e = np.array(sorted(c))
-        ax.loglog(e, [c[x] for x in e], "o-", label=r"$c(\varepsilon)$ (E1)")
+        lab = r"$c(\varepsilon)$ (E1)"
+        if len(c) > 1:
+            lab += f", slope {slope(c):.2f}"
+        ax.loglog(e, [c[x] for x in e], "o-", color=COLORS["c"], label=lab)
     if chat:
         e = np.array(sorted(chat))
         med = np.array([chat[x][0] for x in e])
-        lo = np.array([chat[x][1] for x in e])
-        hi = np.array([chat[x][2] for x in e])
-        ax.loglog(e, med, "s-", label=r"$\hat c(\varepsilon)$ (E2)")
-        ax.fill_between(e, lo, hi, alpha=0.2)
+        lab = r"$\hat c(\varepsilon)$ (E2)"
+        if len(chat) > 1:
+            lab += f", slope {slope({x: chat[x][0] for x in e}):.2f}"
+        ax.loglog(e, med, "s-", color=COLORS["chat"], label=lab)
+        ax.fill_between(e, [chat[x][1] for x in e], [chat[x][2] for x in e],
+                        color=COLORS["chat"], alpha=0.2, lw=0)
     if lam:
         e = np.array(sorted(lam))
-        ax.loglog(e, [lam[x] for x in e], "^-",
-                  label=r"$\lambda_{\min}(\varepsilon)$ (E3)")
+        lab = r"$\lambda_{\min}(\varepsilon)$ (E3)"
+        if len(lam) > 1:
+            lab += f", slope {slope(lam):.2f}"
+        ax.loglog(e, [lam[x] for x in e], "^-", color=COLORS["lam"], label=lab)
     ax.set_xlabel(r"$\varepsilon$")
-    ax.set_ylabel("estimator")
-    ax.set_title(f"Degeneration of the PL constant — {problem}")
-    ax.grid(alpha=0.3, which="both")
-    ax.legend()
-    out = FIG_DIR / f"star_{problem}_{grid}.png"
+    ax.set_title(problem, fontsize=10)
+    plain_log_ticks(ax.xaxis, (0.02, 0.05, 0.1, 0.2, 0.5))
+    ax.yaxis.set_major_locator(ticker.LogLocator(numticks=10))
+    ax.grid(alpha=0.3, which="major")
+    ax.legend(fontsize=8, loc="lower right")
+    return bool(c or chat or lam)
+
+
+def main(grid):
+    fig, axes = plt.subplots(1, len(PROBLEMS), figsize=(9.6, 4.0),
+                             sharey=True)
+    if not any([panel(ax, p, grid) for ax, p in zip(axes, PROBLEMS)]):
+        raise SystemExit("no E1/E2/E3 results found — run those first")
+    axes[0].set_ylabel("estimator")
     fig.tight_layout()
-    fig.savefig(out, dpi=170)
+    out = FIG_DIR / f"star_{grid}.png"
+    fig.savefig(out, dpi=200)
     print(f"-> {out}")
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--problem", choices=["moons", "housing"], default="moons")
     ap.add_argument("--grid", default="asym")
     a = ap.parse_args()
-    main(a.problem, a.grid)
+    main(a.grid)
