@@ -181,8 +181,8 @@ $\hat c(\eps)\propto\eps^{1.20}$ --- an essentially linear degeneration in
 the entropic intensity, which steepens super-linearly at the smallest $\eps$.
 On the regression benchmark, where the optimal control barely
 concentrates, the degeneration is linear with no steepening:
-$c(\eps)\propto\eps^{0.99}$ down to $\eps=0.02$ and
-$\lambda_{\min}(\eps)\propto\eps^{0.90}$.
+$c(\eps)\propto\eps^{0.99}$ down to $\eps=0.02$,
+$\hat c(\eps)\propto\eps^{1.04}$ and $\lambda_{\min}(\eps)\propto\eps^{0.94}$.
 
 Section~\ref{sec:framework} recalls the framework,
 Section~\ref{sec:method} describes the numerical method,
@@ -798,11 +798,15 @@ fixed points are strict local minima and not saddles.  The $\lambda_{\min}$
 curve is not a clean power law: its local log-log slope steepens from
 $1.32$ ($\eps\in[0.2,0.5]$) to $1.71$ ($\eps\in[0.05,0.1]$), a super-linear
 degeneration discussed in Section~\ref{sec:heuristic}.  On \emph{housing}
-$\lambda_{\min}=1.06$, $0.236$ and $0.134$ at $\eps=0.5$, $0.1$ and $0.05$:
-strictly positive as well, and degenerating more slowly, with slope $0.90$
-(local slopes $0.81$ and $0.93$) and no steepening.
-\pending{\emph{moons} and \emph{housing} at the flow-refined $\eps=0.02$,
-and \emph{housing} at $\eps=0.2$.}
+$\lambda_{\min}=1.06$, $0.440$, $0.236$ and $0.134$ at $\eps=0.5$, $0.2$,
+$0.1$ and $0.05$: strictly positive as well, and degenerating more slowly,
+with slope $0.90$ over $[0.05,0.5]$ (local slopes $0.96$, $0.90$ and $0.82$)
+and no steepening.  At the flow-refined $\eps=0.02$ endpoint
+$\lambda_{\min}=0.0485$, still positive; there LOBPCG stopped at residual
+$5\cdot10^{-3}$ instead of $10^{-4}$, so this value, a Rayleigh quotient, is
+an upper bound for $\lambda_{\min}$ and lies within $0.005$ of an
+eigenvalue.  Including it, the slope is $0.94$.
+\pending{\emph{moons} at the flow-refined $\eps=0.02$.}
 
 \subsection{Genericity: stability under perturbations of the data}
 \label{sec:genericity}
@@ -909,11 +913,11 @@ over \emph{sampled} directions, $c(\eps)$ is an upper bound for the true
 local constant.  On \emph{housing} the picture is the same and cleaner.
 Every cloud is fully admissible ($100/100$, also at $\eps=0.02$ against the
 flow-refined endpoint, where $\cI_h(\bnu^*)=1.2\cdot10^{-17}$), every
-perturbation has $J>J^*$, and $c(\eps)=5.46$, $2.19$, $1.10$ and $0.227$ at
-$\eps=0.5$, $0.2$, $0.1$ and $0.02$ lie on a straight line of slope $0.99$,
-with local slopes between $0.98$ and $1.00$: the degeneration is linear,
-with no steepening at small $\eps$ (Figure~\ref{fig:e1}).
-\pending{\emph{housing} cloud at $\eps=0.05$.}
+perturbation has $J>J^*$, and $c(\eps)=5.46$, $2.19$, $1.10$, $0.555$ and
+$0.227$ at $\eps=0.5$, $0.2$, $0.1$, $0.05$ and $0.02$ lie on a straight line
+of slope $0.99$, with local slopes between $0.98$ and $1.00$: the
+degeneration is linear, with no steepening at small $\eps$
+(Figure~\ref{fig:e1}).
 
 \begin{figure}[ht]
 \centering
@@ -1006,12 +1010,15 @@ both quadratic in $\bnu-\bnu^*$ near the minimizer, equal rates are what
 exponential convergence of the control itself predicts.
 \pending{the entropy decay at $\eps\le0.1$.}
 
-On \emph{housing} the descents at $\eps=0.5$ and $0.2$ behave as on
-\emph{moons}: median rates $\hat c=3.98$ and $1.55$, seeds agreeing to
-better than $0.1\%$ in $5$ of the $6$ $(\eps,\delta)$ cells, and the same
-amplitude factor ($1.26$ and $1.19$).
-\pending{\emph{housing} descents at $\eps\in\{0.1,0.05\}$ and at the
-flow-refined $\eps=0.02$ endpoint.}
+On \emph{housing} the descents behave as on \emph{moons}: median rates
+$\hat c=3.98$, $1.55$, $0.743$ and $0.365$ at $\eps=0.5$, $0.2$, $0.1$ and
+$0.05$, seeds agreeing to better than $0.15\%$ in $9$ of the $12$
+$(\eps,\delta)$ cells (within $2\%$ in two of the others, $18\%$ in one cell
+at $\eps=0.2$), and an amplitude factor between $1.19$ and $1.34$.  The
+medians follow $\hat c\propto\eps^{1.04}$, closer to linear than on
+\emph{moons}, and $\hat c/c$ decreases only mildly, from $0.73$ at $\eps=0.5$
+to $0.66$ at $\eps=0.05$.
+\pending{\emph{housing} descents at the flow-refined $\eps=0.02$ endpoint.}
 
 \begin{figure}[ht]
 \centering
@@ -1053,12 +1060,12 @@ $\eps$ & $c$ (E1) & $\hat c$ (E2) & $\lambda_{\min}$ (E3)
        & $c$ (E1) & $\hat c$ (E2) & $\lambda_{\min}$ (E3)\\
 \midrule
 0.5  & 5.54 & 4.12 & 1.233  & 5.46 & 3.98 & 1.062\\
-0.2  & 2.31 & 1.41 & 0.368  & 2.19 & 1.55 & \pend\\
-0.1  & 1.28 & 0.70 & 0.144  & 1.10 & \pend & 0.236\\
-0.05 & 0.70 & 0.33 & 0.0442 & \pend & \pend & 0.134\\
-0.02$^\dagger$ & 0.159 & 0.080 & \pend & 0.227 & \pend & \pend\\
+0.2  & 2.31 & 1.41 & 0.368  & 2.19 & 1.55 & 0.440\\
+0.1  & 1.28 & 0.70 & 0.144  & 1.10 & 0.743 & 0.236\\
+0.05 & 0.70 & 0.33 & 0.0442 & 0.555 & 0.365 & 0.134\\
+0.02$^\dagger$ & 0.159 & 0.080 & \pend & 0.227 & \pend & 0.0485$^\ddagger$\\
 \midrule
-log-log slope & 1.06 & 1.20 & 1.43 & 0.99 & \pend & 0.90\\
+log-log slope & 1.06 & 1.20 & 1.43 & 0.99 & 1.04 & 0.94\\
 \bottomrule
 \end{tabular}
 \vskip 2pt
@@ -1067,7 +1074,9 @@ grid; E2, E3 on the pilot grid; $\hat c$ is the median of $9$ descents).
 Slopes over the computed values.
 $^\dagger$Relative to the flow-refined endpoint ($99/100$ admissible cloud
 points on \emph{moons}, $100/100$ on \emph{housing}; the non-converged
-iterate admits none on \emph{moons}).}
+iterate admits none on \emph{moons}).
+$^\ddagger$LOBPCG residual $5\cdot10^{-3}$ (tolerance $10^{-4}$ elsewhere):
+a Rayleigh-quotient upper bound.}
 \label{tab:estimators}
 \end{table}
 
@@ -1081,8 +1090,8 @@ grid-dependent) normalization and sits an order of magnitude below ---
 degenerates faster on \emph{moons} (slope $1.43$) and shares with $c$
 and $\hat c$ the super-linear steepening at the smallest $\eps$.  On
 \emph{housing} the degeneration is linear without steepening:
-$c\propto\eps^{0.99}$ down to $\eps=0.02$ and $\lambda_{\min}\propto
-\eps^{0.90}$.
+$c\propto\eps^{0.99}$ down to $\eps=0.02$, $\hat c\propto\eps^{1.04}$ and
+$\lambda_{\min}\propto\eps^{0.94}$.
 
 \begin{figure}[ht]
 \centering
@@ -1251,8 +1260,8 @@ All code, frozen $\bnu^*$ checkpoints and experiment outputs are available
 at \url{https://github.com/dantor03/mfnode-pl-verification}
 \todo{tag the submission commit}.  The library is pure Python
 ($\ge3.10$) on \texttt{numpy}/\texttt{scipy}/\texttt{scikit-learn}; no GPU
-is used.  The correctness suite (\texttt{pytest tests/}, $18$ tests,
-$\approx4$\,s) covers every structural property quoted in
+is used.  The correctness suite (\texttt{pytest tests/}, $21$ tests,
+under a minute) covers every structural property quoted in
 Section~\ref{sec:method-tests}.
 
 \subsection*{Data}

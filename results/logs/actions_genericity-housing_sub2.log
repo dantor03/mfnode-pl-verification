@@ -1,0 +1,18 @@
+
+##### housing_sub2 #####
+  eps=0.5: iters=19 conv=True diffTV/omega=4.8e-04 R2_train=0.460
+  eps=0.2: iters=18 conv=True diffTV/omega=4.9e-04 R2_train=0.484
+  eps=0.1: iters=19 conv=True diffTV/omega=5.0e-04 R2_train=0.509
+  eps=0.05: iters=22 conv=True diffTV/omega=4.9e-04 R2_train=0.534
+  eps=0.1: c = 0.5396642945149662  (30/30 admissible)
+  eps=0.1: lambda_min = 2.3896e-01
+  eps=0.05: c = 0.2738452942423588  (30/30 admissible)
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+[0.0002345]
+not reaching the requested tolerance 0.0001.
+Use iteration 292 instead with accuracy 
+0.00023449102605773835.
+
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+  eps=0.05: lambda_min = 1.2311e-01
+-> results/genericity.json

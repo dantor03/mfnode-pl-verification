@@ -1,0 +1,13 @@
+
+=== lambda_min at eps=0.2 (housing/pilot) ===
+    support restriction: 1617/3125 nodes
+  symmetry check: max rel asym = 2.94e-09
+  Pontryagin coherence: <H eta,eta>/2 = 3.8956e-05  vs measured excess = 3.9040e-05  (ratio 0.998)
+    Hv products: 10
+    Hv products: 20
+    Hv products: 30
+    Hv products: 40
+    Hv products: 50
+  lambda_min = 4.397185e-01   (59 Hv products, 394s)
+
+-> results/e3_lambda_min_housing_pilot.json
