@@ -1,0 +1,13 @@
+J* = 0.60241464  (eps=0.1, moons/pilot)
+  delta=0.020 seed=0  c-hat = 0.8718  KL rate = 0.8733  (mass_err=4.4e-16)
+  delta=0.020 seed=1  c-hat = 0.8728  KL rate = 0.8743  (mass_err=2.2e-16)
+  delta=0.020 seed=2  c-hat = 0.8743  KL rate = 0.8750  (mass_err=4.4e-16)
+  delta=0.050 seed=0  c-hat = 0.6949  KL rate = 0.6644  (mass_err=4.4e-16)
+  delta=0.050 seed=1  c-hat = 0.6956  KL rate = 0.6648  (mass_err=4.4e-16)
+  delta=0.050 seed=2  c-hat = 0.6968  KL rate = 0.6654  (mass_err=4.4e-16)
+  delta=0.100 seed=0  c-hat = 0.5994  KL rate = 0.5710  (mass_err=4.4e-16)
+  delta=0.100 seed=1  c-hat = 0.5996  KL rate = 0.5709  (mass_err=4.4e-16)
+  delta=0.100 seed=2  c-hat = 0.6009  KL rate = 0.5714  (mass_err=4.4e-16)
+-> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/paper/figures/e2_descent_moons_eps0.1.png
+-> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/paper/figures/e2_kl_moons_eps0.1.png
+-> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/results/e2_moons_eps0.1.json
