@@ -1,0 +1,29 @@
+
+##### moons_seed2 #####
+  eps=0.5: iters=25 conv=True diffTV/omega=4.2e-04 accuracy=0.695
+  eps=0.2: iters=26 conv=True diffTV/omega=4.1e-04 accuracy=0.735
+  eps=0.1: iters=27 conv=True diffTV/omega=4.7e-04 accuracy=0.780
+  eps=0.05: iters=39 conv=True diffTV/omega=4.4e-04 accuracy=0.830
+  eps=0.1: c = 0.6340625101318127  (30/30 admissible)
+/home/runner/work/mfnode-pl-verification/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+[0.01942815]
+not reaching the requested tolerance 0.0001.
+Use iteration 300 instead with accuracy 
+0.01942794829101064.
+
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+  eps=0.1: lambda_min = 1.4997e-01
+  eps=0.05: c = 0.34311922353718605  (30/30 admissible)
+/home/runner/work/mfnode-pl-verification/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited at iteration 300 with accuracies 
+[0.05567842]
+not reaching the requested tolerance 0.0001.
+Use iteration 292 instead with accuracy 
+0.05542682801688645.
+
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+/home/runner/work/mfnode-pl-verification/mfnode-pl-verification/src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+[0.00308921]
+not reaching the requested tolerance 0.0001.
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+  eps=0.05: lambda_min = 4.2569e-02
+-> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/results/genericity.json
