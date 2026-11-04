@@ -114,6 +114,22 @@ def marginals(problem, grid, eps):
     print(f"-> {out_path}")
 
 
+def top_k_inclusion(w, k=10, rtol=1e-9):
+    """Probability that each node is among the k heaviest of ``w``.
+
+    The a <-> -a symmetry (and, at large eps, the permutation symmetry of the
+    grid) makes many weights exactly equal, so a plain argsort cut at k splits
+    tied nodes arbitrarily and the result depends on the sorting algorithm.
+    Nodes tied with the k-th weight share the remaining slots equally, which
+    is the inclusion probability under uniform random tie-breaking.
+    """
+    cut = np.sort(w)[::-1][k - 1]
+    tie = np.abs(w - cut) <= rtol * cut
+    p = ((w > cut) & ~tie).astype(float)
+    p[tie] = (k - p.sum()) / tie.sum()
+    return p
+
+
 def concentration(nu):
     """Concentration statistics of the time-averaged mass (Table 4.2)."""
     M = nu.shape[1]
@@ -121,12 +137,12 @@ def concentration(nu):
     srt = np.sort(wbar)[::-1]
     H = -(wbar * np.log(np.maximum(wbar, 1e-300))).sum()
     csum = np.cumsum(srt)
-    top0 = set(np.argsort(-nu[0])[:10])
-    topT = set(np.argsort(-nu[-1])[:10])
+    # expected size of top10(t=0) & top10(t=T) under random tie-breaking
+    overlap = float(top_k_inclusion(nu[0]) @ top_k_inclusion(nu[-1]))
     return dict(top1_mass=float(srt[: max(1, M // 100)].sum()),
                 n_eff=float(np.exp(H)),
                 n50=int(np.searchsorted(csum, 0.5) + 1),
-                top10_overlap=len(top0 & topT), M=M)
+                top10_overlap=overlap, M=M)
 
 
 def table():
@@ -142,7 +158,7 @@ def table():
                                                         **st)
             print(f"\\emph{{{problem}}} & {eps:g} & {st['top1_mass']:.2f} & "
                   f"{st['n_eff']:.0f} & {st['n50']} & "
-                  f"{st['top10_overlap']}/10\\\\")
+                  f"{st['top10_overlap']:.1f}/10\\\\")
     out = RESULTS / "concentration.json"
     out.write_text(json.dumps(rows, indent=1))
     print(f"-> {out}")
