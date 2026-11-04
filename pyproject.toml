@@ -29,7 +29,7 @@ dev = [
 ]
 
 [project.urls]
-Repository = "https://github.com/dantor03/daudin-delarue-moonsdata"
+Repository = "https://github.com/dantor03/mfnode-pl-verification"
 Paper      = "https://arxiv.org/abs/2507.08486"
 
 [tool.setuptools.packages.find]

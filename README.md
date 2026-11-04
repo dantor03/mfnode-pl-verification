@@ -2,6 +2,7 @@
 
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue?logo=python)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://github.com/dantor03/mfnode-pl-verification/actions/workflows/ci.yml/badge.svg)](https://github.com/dantor03/mfnode-pl-verification/actions/workflows/ci.yml)
 
 Preprint and code by **Daniel Torres González** (ICMAT–CSIC, JAE Intro fellowship).
 
@@ -21,6 +22,20 @@ behind continuum-depth ResNets and tests the two results of that paper:
 - **Local PL inequality and the conjectured exponential convergence**
   (Meta-Theorem 1.4): the empirical PL constant c(ε), the descent rate ĉ(ε),
   and λ_min(ε), three independent estimators of the degeneration as ε → 0⁺.
+
+## Key results
+
+![Degeneration of the PL constant](paper/figures/e1_c_vs_eps_moons_asym.png)
+
+- **Stability.** The fixed point ν\* is reached from initializations far from it, and the
+  projected Hessian stays positive definite along the whole ε-schedule.
+- **PL inequality.** Every sampled perturbation satisfies it, and the Wasserstein gradient
+  descent converges exponentially with a rate that does not depend on the initialization.
+- **Degeneration as ε → 0⁺.** Independent estimators show that the PL constant decays
+  essentially linearly in ε: c(ε) ∝ ε^1.06 and ĉ(ε) ∝ ε^1.20 on the classification task
+  (figure above), with a super-linear steepening at the smallest ε.
+- The loss of convergence of the fixed-point iteration at small ε is a period-doubling of
+  the damped map, not a loss of stability of ν\*.
 
 Status: **draft**. Results still to be computed are marked in orange in the
 PDF; see [`ROADMAP.md`](ROADMAP.md).
@@ -48,7 +63,7 @@ tests/            correctness suite (pytest)
 
 ```bash
 pip install -e ".[dev]"
-pytest tests/                                   # ~4 s
+pytest tests/                                   # ~1 min
 python experiments/00_compute_nu_star.py --all  # or use the frozen checkpoints
 python experiments/e1_pl_constant.py --problem moons --grid asym
 python experiments/e2_descent.py --problem moons --eps 0.05 --n-steps 600
