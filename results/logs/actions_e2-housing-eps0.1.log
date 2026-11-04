@@ -1,0 +1,13 @@
+J* = 0.25881564  (eps=0.1, housing/pilot)
+  delta=0.020 seed=0  c-hat = 0.9264  KL rate = 0.9919  (mass_err=4.4e-16)
+  delta=0.020 seed=1  c-hat = 0.9265  KL rate = 0.9923  (mass_err=4.4e-16)
+  delta=0.020 seed=2  c-hat = 0.9272  KL rate = 0.9930  (mass_err=4.4e-16)
+  delta=0.050 seed=0  c-hat = 0.7320  KL rate = 0.7830  (mass_err=4.4e-16)
+  delta=0.050 seed=1  c-hat = 0.7431  KL rate = 0.7831  (mass_err=4.4e-16)
+  delta=0.050 seed=2  c-hat = 0.7437  KL rate = 0.7836  (mass_err=4.4e-16)
+  delta=0.100 seed=0  c-hat = 0.6901  KL rate = 0.7259  (mass_err=4.4e-16)
+  delta=0.100 seed=1  c-hat = 0.6897  KL rate = 0.7259  (mass_err=4.4e-16)
+  delta=0.100 seed=2  c-hat = 0.6905  KL rate = 0.7264  (mass_err=4.4e-16)
+-> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/paper/figures/e2_descent_housing_eps0.1.png
+-> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/paper/figures/e2_kl_housing_eps0.1.png
+-> /home/runner/work/mfnode-pl-verification/mfnode-pl-verification/results/e2_housing_eps0.1.json
