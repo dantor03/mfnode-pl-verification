@@ -83,10 +83,14 @@ Daudin--Delarue as stated.  \emph{Stability and uniqueness:} the fixed point
 is reached from initializations far from it, the projected Hessian is
 positive definite along the whole $\eps$-schedule, and the Jacobi
 condition holds: the problem restarted from an intermediate layer recovers
-the restriction of the optimum and is itself stable.
-\pending{genericity across perturbed data.}  \emph{PL inequality:}
+the restriction of the optimum and is itself stable, and on twelve
+perturbed data sets (resampled, noisier, subsampled) the minimizer stays
+stable and the empirical PL constant varies by less than $2\%$.
+\emph{PL inequality:}
 every sampled perturbation satisfies it, the gradient descent converges
-exponentially with a rate that does not depend on the initial direction, and
+exponentially with a rate that does not depend on the initial direction
+(at the smallest $\eps$ the control itself converges more slowly, in a
+tail too small to show in the cost), and
 three independent estimators show that the PL constant degenerates
 essentially linearly in $\eps$ ($c(\eps)\propto\eps^{1.06}$,
 $\hat c(\eps)\propto\eps^{1.20}$ on the classification task,
@@ -166,8 +170,8 @@ respectively.  (iii) A picture of the computed optimum and of its
 concentration as $\eps$ decreases (Section~\ref{sec:optimum}).
 (iv) Tests of Meta-Theorem~1.3: independence of the fixed point from the
 initialization, positive definiteness of the Hessian along the schedule,
-the Jacobi condition, \pending{and persistence across perturbed data}
-(Section~\ref{sec:stability}).  (v) Tests of Meta-Theorem~1.4 and of the
+the Jacobi condition, and persistence of the stable minimizer across
+perturbed data (Section~\ref{sec:stability}).  (v) Tests of Meta-Theorem~1.4 and of the
 conjecture: three independent estimators of the PL constant and of its
 degeneration as $\eps\to0^+$ (Section~\ref{sec:pl}).  The implementation
 is open source, with machine-precision correctness tests.
@@ -797,7 +801,10 @@ perturbation increases $J$, Section~\ref{sec:e1}) this confirms that the
 fixed points are strict local minima and not saddles.  The $\lambda_{\min}$
 curve is not a clean power law: its local log-log slope steepens from
 $1.32$ ($\eps\in[0.2,0.5]$) to $1.71$ ($\eps\in[0.05,0.1]$), a super-linear
-degeneration discussed in Section~\ref{sec:heuristic}.  On \emph{housing}
+degeneration discussed in Section~\ref{sec:heuristic}.  At the flow-refined
+$\eps=0.02$ endpoint $\lambda_{\min}=0.0095$, still positive, with local
+slope $1.67$; there LOBPCG stopped at residual $3\cdot10^{-3}$, so the value
+is an upper bound within $0.003$ of an eigenvalue.  On \emph{housing}
 $\lambda_{\min}=1.06$, $0.440$, $0.236$ and $0.134$ at $\eps=0.5$, $0.2$,
 $0.1$ and $0.05$: strictly positive as well, and degenerating more slowly,
 with slope $0.90$ over $[0.05,0.5]$ (local slopes $0.96$, $0.90$ and $0.82$)
@@ -806,7 +813,6 @@ $\lambda_{\min}=0.0485$, still positive; there LOBPCG stopped at residual
 $5\cdot10^{-3}$ instead of $10^{-4}$, so this value, a Rayleigh quotient, is
 an upper bound for $\lambda_{\min}$ and lies within $0.005$ of an
 eigenvalue.  Including it, the slope is $0.94$.
-\pending{\emph{moons} at the flow-refined $\eps=0.02$.}
 
 \subsection{Genericity: stability under perturbations of the data}
 \label{sec:genericity}
@@ -821,25 +827,47 @@ $\{0.08,0.12,0.16\}$, and \emph{housing} with five training subsamples.  For
 each data set we recompute the continuation on the pilot grid down to
 $\eps=0.05$, $\lambda_{\min}$ at $\eps\in\{0.1,0.05\}$, and a reduced E1
 cloud ($30$ perturbations) giving $c(\eps)$ (Table~\ref{tab:genericity}).
-\pending{Table~\ref{tab:genericity}: expected outcome to be confirmed ---
-$\lambda_{\min}>0$ for every data set, with small spread, and the same
-log-log slope of $c(\eps)$.}
+The reference data of the other experiments go through the same probe, so
+that the variants are compared with a value computed in the same way.
+
+Every data set gives a converged continuation, a fully admissible cloud
+($30/30$, every perturbation with $J>J^*$) and $\lambda_{\min}>0$ at both
+values of $\eps$.  The spread is small.  The envelope $c$ varies by less
+than $2\%$ across the seven \emph{moons} variants and the five
+\emph{housing} subsamples, and the reference \emph{moons} data lie within
+$0.1\%$ of that range.  Its local slope between $\eps=0.1$ and $0.05$ is $0.88$--$0.90$
+on \emph{moons} and $0.97$--$0.98$ on \emph{housing}, against $0.86$ and
+$0.99$ for E1 on the reference data.  $\lambda_{\min}(0.1)$ varies by $4\%$
+on \emph{moons} and $6\%$ on \emph{housing}; $\lambda_{\min}(0.05)$ varies
+more (\pending{moons range}, and $0.109$--$0.134$ on \emph{housing}), partly
+because LOBPCG reaches only a residual of a few $10^{-3}$ there.  The values
+of $c$ are about half those of E1 because the probe runs on the pilot grid:
+the same cloud on the asymmetric grid gives $c(0.1)=1.276$ for the reference
+\emph{moons} data, against $1.28$ in E1 and $0.636$ on the pilot grid.
+Within these families the stable minimizer persists, with nearby constants
+and the same degeneration exponent, as openness of $\cO$ predicts.
 
 \begin{table}[ht]
 \centering\small
-\begin{tabular}{l l cc cc}
+\begin{tabular}{l l cc ccc}
 \toprule
-benchmark & data variant & $\lambda_{\min}(0.1)$ & $\lambda_{\min}(0.05)$ &
-$c(0.1)$ & $c(0.05)$\\
+benchmark & data & $\lambda_{\min}(0.1)$ & $\lambda_{\min}(0.05)$ &
+$c(0.1)$ & $c(0.05)$ & slope of $c$\\
 \midrule
-\emph{moons}   & seeds $0$--$4$, noise $0.12$ & \pend & \pend & \pend & \pend\\
-\emph{moons}   & noise $0.08$ / $0.16$       & \pend & \pend & \pend & \pend\\
-\emph{housing} & subsamples $0$--$4$          & \pend & \pend & \pend & \pend\\
+\emph{moons}   & reference & $0.144$ & \pend & $0.636$ & $0.343$ & $0.89$\\
+\emph{moons}   & seeds $0$--$4$ & $0.145$--$0.150$ & \pend & $0.634$--$0.636$ & $0.342$--$0.344$ & $0.88$--$0.89$\\
+\emph{moons}   & noise $0.08$ / $0.16$       & $0.144$--$0.145$ & \pend & $0.636$ & $0.340$--$0.347$ & $0.88$--$0.90$\\
+\emph{housing} & reference                    & $0.236$ & $0.134$ & --- & --- & ---\\
+\emph{housing} & subsamples $0$--$4$          & $0.234$--$0.249$ & $0.109$--$0.134$ & $0.538$--$0.540$ & $0.272$--$0.275$ & $0.97$--$0.98$\\
 \bottomrule
 \end{tabular}
 \vskip 2pt
-\caption{Genericity probe: range (min--max) over the data variants.
-\pending{not yet computed.}}
+\caption{Genericity probe (pilot grid, $30$-point cloud): range (min--max)
+over the data variants (\emph{moons} seeds at noise $0.12$).  The
+reference rows are the data of the other experiments (\emph{moons}: seed
+$42$, noise $0.12$); their $\lambda_{\min}$ is that of E3, and the \emph{housing}
+reference cloud was not run on the pilot grid.  The slope of $c$ is the
+local log-log slope between $\eps=0.1$ and $0.05$.}
 \label{tab:genericity}
 \end{table}
 
@@ -965,15 +993,17 @@ instead make the decay accelerate as the gap closes, the opposite of what
 we see.  The medians follow
 \begin{equation}
 \hat c(\eps)\;\propto\;\eps^{\,1.20}\quad(\eps\in[0.02,0.5]),
-\qquad
-\hat c/c\in[0.47,0.74],
 \end{equation}
 and the exponent hardly depends on the amplitude ($1.17$, $1.20$ and $1.26$
-for $\delta=0.02$, $0.05$ and $0.1$ separately).  The ratio $\hat c/c$
-decreases from $0.74$ at $\eps=0.5$ to $0.47$ at $\eps=0.05$ ($0.50$ at
-$\eps=0.02$).  That it is below one is expected: the cloud envelope of E1
-over-estimates the true constant, whereas the descent automatically finds
-the slowest direction.  At the recovered endpoint $\eps=0.02$ the amplitude
+for $\delta=0.02$, $0.05$ and $0.1$ separately).  The ratio of $\hat c$ to
+the E1 envelope $c$ decreases from $0.74$ at $\eps=0.5$ to $0.47$ at
+$\eps=0.05$ ($0.50$ at $\eps=0.02$), but most of the distance between the
+two is the grid, not the estimator: E1 runs on the asymmetric grid and E2
+on the pilot grid, and the same $30$-point cloud gives $c(0.1)=1.276$ on
+the former and $0.636$ on the latter.  Against the cloud on its own grid
+(Section~\ref{sec:genericity}) the descent rate is $\hat c/c=1.09$ at
+$\eps=0.1$ and $0.96$ at $\eps=0.05$: the two estimators agree in level as
+well as in exponent.  Only exponents are comparable across grids.  At the recovered endpoint $\eps=0.02$ the amplitude
 factor ($\hat c=0.095$ at $\delta=0.02$ vs $0.063$ at $\delta=0.1$, i.e.\
 $1.5$) is within the range seen at larger $\eps$, so E2 gives no sign that
 the PL neighborhood shrinks with $\eps$; E4 addresses that question
@@ -1007,18 +1037,54 @@ $4.13$ and $1.54$ on \emph{moons} (against $\hat c=4.12$ and $1.41$) and
 $3.97$ and $1.61$ on \emph{housing} (against $3.98$ and $1.55$), ratios
 between $1.00$ and $1.09$.  Since $J-J^*$ and the integrated entropy are
 both quadratic in $\bnu-\bnu^*$ near the minimizer, equal rates are what
-exponential convergence of the control itself predicts.
-\pending{the entropy decay at $\eps\le0.1$.}
+exponential convergence of the control itself predicts.  The same holds at
+$\eps=0.1$ on \emph{moons} (entropy rate $0.665$ against $\hat c=0.696$) and
+at $\eps\in\{0.1,0.05\}$ on \emph{housing} ($0.783$ and $0.397$ against
+$0.743$ and $0.365$): ratios between $0.96$ and $1.09$.
+
+At smaller $\eps$ the two decays separate (Figure~\ref{fig:e2-entropy}).
+On \emph{moons} at $\eps=0.05$ the entropy follows the cost down to
+$10^{-5}$--$10^{-6}$ of its initial value and then bottoms out and rises to
+the $10^{-6}$ level of the fixed-point tolerance of the reference (median
+fitted rate $0.186$ against $\hat c=0.328$).  At the flow-refined
+$\eps=0.02$ endpoints the cost gap reaches the resolution of $J^*$ within
+$s\approx80$, whereas the entropy continues on a slow tail, from
+$10^{-4}$--$10^{-3}$ of its initial value on \emph{moons} and
+$10^{-7}$--$10^{-6}$ on \emph{housing}: its local rate is $0.014$ on
+\emph{housing} and decreases from $0.02$ to $0.005$ on \emph{moons}, against
+$\hat c=0.142$ and $0.080$.  The control keeps converging, but the last
+stretch is four to sixteen times slower than the decay of the cost.  Along
+a single direction the cost and the entropy decay at the same rate, so the
+tail points to directions in which $J-J^*$ lies below the resolution of
+$J^*$.  Such directions are invisible to E1 and to $\hat c$; if they belong
+to the PL neighborhood, the local constant at $\eps=0.02$ is at most of
+the order of these tail rates, several times below $\hat c$.  Deciding this needs a reference cost accurate
+well below $10^{-9}$, and we leave it open.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{e2_entropy.png}
+\caption{E2: cost gap and integrated relative entropy along the same
+descent ($\delta=0.05$, seed $0$), each relative to its initial value; the
+legend gives the median fitted rates over the nine descents.  At
+$\eps=0.1$ they decay together down to the tolerance floor; at the
+flow-refined $\eps=0.02$ endpoints the cost reaches the resolution of $J^*$
+(where the curve stops or turns into a floor) while the entropy goes on
+decaying, much more slowly.}
+\label{fig:e2-entropy}
+\end{figure}
 
 On \emph{housing} the descents behave as on \emph{moons}: median rates
-$\hat c=3.98$, $1.55$, $0.743$ and $0.365$ at $\eps=0.5$, $0.2$, $0.1$ and
-$0.05$, seeds agreeing to better than $0.15\%$ in $9$ of the $12$
-$(\eps,\delta)$ cells (within $2\%$ in two of the others, $18\%$ in one cell
-at $\eps=0.2$), and an amplitude factor between $1.19$ and $1.34$.  The
-medians follow $\hat c\propto\eps^{1.04}$, closer to linear than on
-\emph{moons}, and $\hat c/c$ decreases only mildly, from $0.73$ at $\eps=0.5$
-to $0.66$ at $\eps=0.05$.
-\pending{\emph{housing} descents at the flow-refined $\eps=0.02$ endpoint.}
+$\hat c=3.98$, $1.55$, $0.743$, $0.365$ and $0.142$ at $\eps=0.5$, $0.2$,
+$0.1$, $0.05$ and the flow-refined $0.02$, seeds agreeing to better than
+$0.15\%$ in $9$ of the $12$ $(\eps,\delta)$ cells at $\eps\ge0.05$ (within
+$2\%$ in two of the others, $18\%$ in one cell at $\eps=0.2$; within $2\%$
+at $\eps=0.02$ except $12\%$ for $\delta=0.1$), and an amplitude factor
+between $1.19$ and $1.34$.  The medians follow $\hat c\propto\eps^{1.04}$
+with local slopes between $1.03$ and $1.06$, closer to linear than on
+\emph{moons}, and the cross-grid ratio $\hat c/c$ decreases only mildly,
+from $0.73$ at $\eps=0.5$ to $0.63$ at $\eps=0.02$.
+
 
 \begin{figure}[ht]
 \centering
@@ -1063,20 +1129,23 @@ $\eps$ & $c$ (E1) & $\hat c$ (E2) & $\lambda_{\min}$ (E3)
 0.2  & 2.31 & 1.41 & 0.368  & 2.19 & 1.55 & 0.440\\
 0.1  & 1.28 & 0.70 & 0.144  & 1.10 & 0.743 & 0.236\\
 0.05 & 0.70 & 0.33 & 0.0442 & 0.555 & 0.365 & 0.134\\
-0.02$^\dagger$ & 0.159 & 0.080 & \pend & 0.227 & \pend & 0.0485$^\ddagger$\\
+0.02$^\dagger$ & 0.159 & 0.080 & 0.0095$^\ddagger$ & 0.227 & 0.142 & 0.0485$^\ddagger$\\
 \midrule
-log-log slope & 1.06 & 1.20 & 1.43 & 0.99 & 1.04 & 0.94\\
+log-log slope & 1.06 & 1.20 & 1.51 & 0.99 & 1.04 & 0.94\\
 \bottomrule
 \end{tabular}
 \vskip 2pt
 \caption{The three estimators of the PL degeneration (E1 on the asymmetric
 grid; E2, E3 on the pilot grid; $\hat c$ is the median of $9$ descents).
+Levels are not comparable across the two grids (the same cloud gives a
+$c$ about twice as large on the asymmetric grid); exponents are.
 Slopes over the computed values.
 $^\dagger$Relative to the flow-refined endpoint ($99/100$ admissible cloud
 points on \emph{moons}, $100/100$ on \emph{housing}; the non-converged
 iterate admits none on \emph{moons}).
-$^\ddagger$LOBPCG residual $5\cdot10^{-3}$ (tolerance $10^{-4}$ elsewhere):
-a Rayleigh-quotient upper bound.}
+$^\ddagger$LOBPCG residual $3\cdot10^{-3}$ (\emph{moons}) and
+$5\cdot10^{-3}$ (\emph{housing}), tolerance $10^{-4}$ elsewhere:
+Rayleigh-quotient upper bounds.}
 \label{tab:estimators}
 \end{table}
 
@@ -1087,7 +1156,7 @@ in $\eps$ that the authors flag as an open direction.
 Figure~\ref{fig:star} superposes the three estimators in log-log.
 $\lambda_{\min}(\eps)$ --- which lives in a different (Euclidean,
 grid-dependent) normalization and sits an order of magnitude below ---
-degenerates faster on \emph{moons} (slope $1.43$) and shares with $c$
+degenerates faster on \emph{moons} (slope $1.51$) and shares with $c$
 and $\hat c$ the super-linear steepening at the smallest $\eps$.  On
 \emph{housing} the degeneration is linear without steepening:
 $c\propto\eps^{0.99}$ down to $\eps=0.02$, $\hat c\propto\eps^{1.04}$ and
@@ -1175,10 +1244,15 @@ iteration; Newton-type solvers or $\eps$-dependent damping would extend the
 range, subject to grid resolution.  Our genericity probe samples data sets
 near two benchmarks and cannot exhibit the complement of $\cO$; locating
 non-generic data (e.g.\ symmetric data sets where several minimizers could
-coexist) is a natural next step.  Finally, $\hat c$ is measured through one
-discretization of the Wasserstein flow; its agreement in slope with the
-discretization-independent ratio estimator $c(\eps)$ is our main evidence
-that the measured degeneration is not a numerical artifact.  Two questions
+coexist) is a natural next step.  The level of every estimator depends on
+the grid: the same cloud gives a $c$ about twice as large on the asymmetric
+grid as on the pilot grid, and both grids are coarse.  The exponents, in
+contrast, agree across grids and across estimators ($c$ on the asymmetric
+grid, $\hat c$ and the genericity clouds on the pilot grid), which is our
+main evidence that the measured degeneration is not a numerical artifact;
+a grid-convergence study of the level of $c$ is open.  So is the slow tail
+of the entropy at $\eps=0.02$ (Section~\ref{sec:e2}(d)), which needs a
+reference cost accurate well below $10^{-9}$.  Two questions
 raised in~\cite{DaudinDelarue2025} remain for future work: the convergence
 of $J^*$ and $\bnu^*$ as the number $N$ of data points grows (with rates
 expected to improve when $\gamma_0\in\cO$), and the approximation of
