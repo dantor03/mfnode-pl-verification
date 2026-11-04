@@ -1,0 +1,84 @@
+# Runs the housing experiments still missing from the preprint on GitHub's
+# runners (they download California Housing; one job per result, in parallel).
+# Each job commits its outputs back to this branch; genericity records are
+# saved to results/genericity_parts/ so that parallel jobs never touch the
+# same file.  Results are merged into main by hand afterwards.
+name: compute (housing)
+
+on:
+  push:
+    branches: [compute-housing]
+    paths: [".github/workflows/compute-housing.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: e1-housing-asym-eps0.05
+            cmd: python experiments/e1_pl_constant.py --problem housing --grid asym --eps 0.05
+          - name: e2-housing-eps0.1
+            cmd: python experiments/e2_descent.py --problem housing --eps 0.1 --n-steps 600
+          - name: e2-housing-eps0.05
+            cmd: python experiments/e2_descent.py --problem housing --eps 0.05 --n-steps 600
+          - name: e2-housing-pilotflow-eps0.02
+            cmd: python experiments/e2_descent.py --problem housing --eps 0.02 --grid pilotflow --n-steps 1200
+          - name: e3-housing-pilot-eps0.2
+            cmd: python experiments/e3_hessian.py --problem housing --grid pilot --eps 0.2
+          - name: e3-housing-pilotflow-eps0.02
+            cmd: python experiments/e3_hessian.py --problem housing --grid pilotflow --eps 0.02
+          - name: genericity-housing_sub0
+            cmd: python experiments/13_genericity.py --variant 7
+          - name: genericity-housing_sub1
+            cmd: python experiments/13_genericity.py --variant 8
+          - name: genericity-housing_sub2
+            cmd: python experiments/13_genericity.py --variant 9
+          - name: genericity-housing_sub3
+            cmd: python experiments/13_genericity.py --variant 10
+          - name: genericity-housing_sub4
+            cmd: python experiments/13_genericity.py --variant 11
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: pip install -e .
+      - uses: actions/cache@v4
+        with:
+          path: ~/scikit_learn_data
+          key: sklearn-data-california-housing
+      - name: Run
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: |
+          set -o pipefail
+          ${{ matrix.cmd }} 2>&1 | tee "results/logs/actions_${{ matrix.name }}.log"
+      - name: Keep genericity record apart
+        if: always() && startsWith(matrix.name, 'genericity-')
+        run: |
+          mkdir -p results/genericity_parts
+          cp results/genericity.json "results/genericity_parts/${{ matrix.name }}.json"
+          git checkout -- results/genericity.json
+      - name: Commit results to this branch
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results paper/figures
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Actions: ${{ matrix.name }}"
+          for i in 1 2 3 4 5 6 7 8; do
+            git pull -q --rebase origin compute-housing && git push -q origin HEAD:compute-housing && exit 0
+            sleep $((RANDOM % 30 + 10))
+          done
+          exit 1
