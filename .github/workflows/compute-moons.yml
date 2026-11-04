@@ -1,0 +1,80 @@
+# Runs the moons experiments still missing from the preprint on GitHub's
+# runners (one job per result, in parallel).
+# Each job commits its outputs back to this branch; genericity records are
+# saved to results/genericity_parts/ so that parallel jobs never touch the
+# same file.  Results are merged into main by hand afterwards.
+name: compute (moons)
+
+on:
+  push:
+    branches: [compute-housing]
+    paths: [".github/workflows/compute-moons.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: e2-moons-eps0.1
+            cmd: python experiments/e2_descent.py --problem moons --eps 0.1 --n-steps 600
+          - name: e2-moons-eps0.05
+            cmd: python experiments/e2_descent.py --problem moons --eps 0.05 --n-steps 600
+          - name: e2-moons-pilotflow-eps0.02
+            cmd: python experiments/e2_descent.py --problem moons --eps 0.02 --grid pilotflow --n-steps 1200
+          - name: e3-moons-pilotflow-eps0.02
+            cmd: python experiments/e3_hessian.py --problem moons --grid pilotflow --eps 0.02
+          - name: genericity-moons_seed1
+            cmd: python experiments/13_genericity.py --variant 1
+          - name: genericity-moons_seed2
+            cmd: python experiments/13_genericity.py --variant 2
+          - name: genericity-moons_seed3
+            cmd: python experiments/13_genericity.py --variant 3
+          - name: genericity-moons_seed4
+            cmd: python experiments/13_genericity.py --variant 4
+          - name: genericity-moons_noise0.08
+            cmd: python experiments/13_genericity.py --variant 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: pip install -e .
+      - uses: actions/cache@v4
+        with:
+          path: ~/scikit_learn_data
+          key: sklearn-data-california-housing
+      - name: Run
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: |
+          set -o pipefail
+          ${{ matrix.cmd }} 2>&1 | tee "results/logs/actions_${{ matrix.name }}.log"
+      - name: Keep genericity record apart
+        if: always() && startsWith(matrix.name, 'genericity-')
+        run: |
+          mkdir -p results/genericity_parts
+          cp results/genericity.json "results/genericity_parts/${{ matrix.name }}.json"
+          git checkout -- results/genericity.json
+      - name: Commit results to this branch
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results paper/figures
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Actions: ${{ matrix.name }}"
+          for i in 1 2 3 4 5 6 7 8; do
+            git pull -q --rebase origin compute-housing && git push -q origin HEAD:compute-housing && exit 0
+            sleep $((RANDOM % 30 + 10))
+          done
+          exit 1
