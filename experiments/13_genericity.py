@@ -12,7 +12,11 @@ drawn data set should fall in O.  For each data variant:
 
 Variants: moons with sampling seeds 0-4 (noise 0.12) and noise 0.08 / 0.16
 (seed 42); housing with training subsamples 0-4 and the features fixed to
-(MedInc, AveOccup) so that only the sample changes.
+(MedInc, AveOccup) so that only the sample changes.  The last variant,
+moons_base, is the reference data of the other experiments (seed 42, noise
+0.12) run through the same probe: on the pilot grid with this 30-point cloud
+c(eps) is not on the scale of E1 (asymmetric grid), so the variants are
+compared with it rather than with E1.
 
 Results are appended per variant to results/genericity.json (crash-safe,
 resumable); checkpoints go to results/genericity/.  Variants are independent,
@@ -49,6 +53,8 @@ VARIANTS = (
             noise=n) for n in (0.08, 0.16)]
     + [dict(tag=f"housing_sub{s}", problem="housing", seed=s)
        for s in range(5)]
+    + [dict(tag="moons_base", problem="moons", seed=datasets.SEED,
+            noise=0.12)]
 )
 
 
