@@ -14,7 +14,7 @@ calculados; no queda ningún `\pending{}`. Solo queda un `\todo{}` editorial
 | Genericidad | 12 variantes de datos + la referencia: continuación, λ_min en ε=0.1 y 0.05 y nube reducida de 30 puntos |
 | Jacobi | Reinicio desde capas intermedias en *moons*, ε=0.05 |
 | Comprobaciones | Dependencia de malla de c (`15_grid_check.py`): la misma nube da una c el doble de grande en la malla asimétrica que en la piloto; solo se comparan exponentes entre mallas. Régimen cuadrático (`16_quadratic_regime.py`): en *moons* se encoge más de cuatro veces entre ε=0.05 y 0.02. Cola lenta de la entropía en ε=0.02 (`fig_e2_entropy.py`) |
-| Autovalores | Repetición con 1200–1500 iteraciones de LOBPCG de los λ_min que no habían convergido; los residuos están en el texto y en `results/genericity_parts/relam-*.json` |
+| Autovalores | Repetición con 1200–1500 iteraciones de LOBPCG de los λ_min que no habían convergido (en *moons* semilla 0, con otros vectores iniciales: `--seed`); los residuos están en el texto y en `results/genericity_parts/relam-*.json` |
 
 Parte del cálculo (*housing*, genericidad y las repeticiones de autovalores)
 se hizo en runners de GitHub Actions; los logs son

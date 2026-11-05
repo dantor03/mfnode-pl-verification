@@ -860,9 +860,15 @@ than $2\%$ across the seven \emph{moons} variants and the five
 $0.1\%$ of that range.  Its local slope between $\eps=0.1$ and $0.05$ is $0.88$--$0.90$
 on \emph{moons} and $0.97$--$0.98$ on \emph{housing}, against $0.86$ and
 $0.99$ for E1 on the reference data.  $\lambda_{\min}(0.1)$ varies by $4\%$
-on \emph{moons} and $6\%$ on \emph{housing}; $\lambda_{\min}(0.05)$ varies
-more (\pending{moons range}, and $0.109$--$0.134$ on \emph{housing}), partly
-because LOBPCG reaches only a residual of a few $10^{-3}$ there.  The values
+on \emph{moons}, partly solver error (the LOBPCG residual is below
+$10^{-3}$ except for two seeds at $1$--$2\cdot10^{-2}$), and by $6\%$ on
+\emph{housing}.  $\lambda_{\min}(0.05)$ varies more: on \emph{moons}
+$0.043$--$0.045$ over the five seeds and the reference data, $0.045$ at
+noise $0.16$ and $0.053$ at noise $0.08$ (residuals up to
+$6\cdot10^{-3}$), and on \emph{housing} $0.109$--$0.134$ (residuals up to
+$1.4\cdot10^{-3}$).  For seed $0$ LOBPCG broke down from its default
+starting vector, even with $1500$ iterations; two other starting vectors
+give $0.0433$ (residual $5\cdot10^{-4}$) and $0.0437$.  The values
 of $c$ are about half those of E1 because the probe runs on the pilot grid:
 the same cloud on the asymmetric grid gives $c(0.1)=1.276$ for the reference
 \emph{moons} data, against $1.28$ in E1 and $0.636$ on the pilot grid.
@@ -876,9 +882,9 @@ and the same degeneration exponent, as openness of $\cO$ predicts.
 benchmark & data & $\lambda_{\min}(0.1)$ & $\lambda_{\min}(0.05)$ &
 $c(0.1)$ & $c(0.05)$ & slope of $c$\\
 \midrule
-\emph{moons}   & reference & $0.144$ & \pend & $0.636$ & $0.343$ & $0.89$\\
-\emph{moons}   & seeds $0$--$4$ & $0.145$--$0.150$ & \pend & $0.634$--$0.636$ & $0.342$--$0.344$ & $0.88$--$0.89$\\
-\emph{moons}   & noise $0.08$ / $0.16$       & $0.144$--$0.145$ & \pend & $0.636$ & $0.340$--$0.347$ & $0.88$--$0.90$\\
+\emph{moons}   & reference & $0.144$ & $0.0442$ & $0.636$ & $0.343$ & $0.89$\\
+\emph{moons}   & seeds $0$--$4$ & $0.145$--$0.150$ & $0.043$--$0.045$ & $0.634$--$0.636$ & $0.342$--$0.344$ & $0.88$--$0.89$\\
+\emph{moons}   & noise $0.08$ / $0.16$       & $0.144$--$0.145$ & $0.045$--$0.053$ & $0.636$ & $0.340$--$0.347$ & $0.88$--$0.90$\\
 \emph{housing} & reference                    & $0.236$ & $0.134$ & --- & --- & ---\\
 \emph{housing} & subsamples $0$--$4$          & $0.234$--$0.249$ & $0.109$--$0.134$ & $0.538$--$0.540$ & $0.272$--$0.275$ & $0.97$--$0.98$\\
 \bottomrule
@@ -889,7 +895,11 @@ over the data variants (\emph{moons} seeds at noise $0.12$).  The
 reference rows are the data of the other experiments (\emph{moons}: seed
 $42$, noise $0.12$); their $\lambda_{\min}$ is that of E3, and the \emph{housing}
 reference cloud was not run on the pilot grid.  The slope of $c$ is the
-local log-log slope between $\eps=0.1$ and $0.05$.}
+local log-log slope between $\eps=0.1$ and $0.05$.  Every $\lambda_{\min}$ is
+a Rayleigh quotient (an upper bound); where $\lambda_{\min}$ was
+recomputed (\emph{moons} reference and noise $0.08$ with $1500$ LOBPCG
+iterations, seed $0$ from other starting vectors, all at $\eps=0.05$), the
+run with the smaller residual is reported.}
 \label{tab:genericity}
 \end{table}
 

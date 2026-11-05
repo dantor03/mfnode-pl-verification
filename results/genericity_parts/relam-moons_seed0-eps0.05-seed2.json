@@ -1,0 +1,10 @@
+{
+ "tag": "moons_seed0",
+ "eps": 0.05,
+ "lambda_min": 0.04365035969225371,
+ "residual": 0.008078873059218134,
+ "hv_products": 404,
+ "maxiter": 400,
+ "seed": 2,
+ "seconds": 7761.1578114032745
+}

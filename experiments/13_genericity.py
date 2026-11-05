@@ -32,7 +32,8 @@ Usage:
 larger LOBPCG iteration budget and records the residual norm
 |H v - lambda v| (the Rayleigh quotient is an upper bound for lambda_min and
 lies within the residual of an eigenvalue).  The result goes to
-results/genericity_parts/relam-<tag>-eps<eps>.json.
+results/genericity_parts/relam-<tag>-eps<eps>[-seed<seed>].json; --seed
+changes the random starting vector of LOBPCG.
 """
 import argparse
 import json
@@ -167,7 +168,7 @@ def run_variant(v, with_hessian=True):
     return rec
 
 
-def relam(i, eps, maxiter):
+def relam(i, eps, maxiter, seed=0):
     v = VARIANTS[i]
     prob = build_problem(v)
     A, _ = solver.build_grid(GRIDS[GRID], R=R_GRID)
@@ -177,15 +178,17 @@ def relam(i, eps, maxiter):
                                   eps=eps, T=T, grad_fn=prob["grad_fn"],
                                   support_threshold=1e-6)
     vals, vecs = hessian.lambda_min_lobpcg(op, k=1, tol=1e-4,
-                                           maxiter=maxiter)
+                                           maxiter=maxiter, seed=seed)
     lam, vec = float(vals[0]), vecs[:, 0]
     resid = float(np.linalg.norm(op @ vec - lam * vec) / np.linalg.norm(vec))
     out = dict(tag=v["tag"], eps=eps, lambda_min=lam, residual=resid,
-               hv_products=op.n_products(), maxiter=maxiter,
+               hv_products=op.n_products(), maxiter=maxiter, seed=seed,
                seconds=time.time() - t0)
     print(f"  {v['tag']} eps={eps}: lambda_min = {lam:.4e}  "
           f"residual = {resid:.1e}  ({out['hv_products']} Hv)", flush=True)
-    path = RESULTS / "genericity_parts" / f"relam-{v['tag']}-eps{eps:g}.json"
+    suffix = f"-seed{seed}" if seed else ""
+    path = (RESULTS / "genericity_parts"
+            / f"relam-{v['tag']}-eps{eps:g}{suffix}.json")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(out, indent=1))
     print(f"-> {path}", flush=True)
@@ -215,9 +218,11 @@ if __name__ == "__main__":
     ap.add_argument("--relam", type=int, metavar="VARIANT")
     ap.add_argument("--eps", type=float, default=0.05)
     ap.add_argument("--maxiter", type=int, default=1500)
+    ap.add_argument("--seed", type=int, default=0,
+                    help="seed of the LOBPCG starting vector (--relam)")
     a = ap.parse_args()
     if a.relam is not None:
-        relam(a.relam, a.eps, a.maxiter)
+        relam(a.relam, a.eps, a.maxiter, seed=a.seed)
     elif a.list:
         for i, v in enumerate(VARIANTS):
             print(i, v["tag"])

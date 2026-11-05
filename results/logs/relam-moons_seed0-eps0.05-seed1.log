@@ -1,0 +1,13 @@
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 400 with accuracies 
+[0.00085417]
+not reaching the requested tolerance 0.0001.
+Use iteration 394 instead with accuracy 
+0.0005652179455065026.
+
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+[0.00048051]
+not reaching the requested tolerance 0.0001.
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+  moons_seed0 eps=0.05: lambda_min = 4.3321e-02  residual = 4.8e-04  (404 Hv)
+-> results/genericity_parts/relam-moons_seed0-eps0.05-seed1.json
