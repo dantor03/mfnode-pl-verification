@@ -1,0 +1,9 @@
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 1500 with accuracies 
+[0.17028553]
+not reaching the requested tolerance 0.0001.
+Use iteration 368 instead with accuracy 
+0.00035322473661215774.
+
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+  moons_base eps=0.1: lambda_min = 1.4432e-01  residual = 1.0e-07  (1504 Hv)
+-> results/genericity_parts/relam-moons_base-eps0.1.json

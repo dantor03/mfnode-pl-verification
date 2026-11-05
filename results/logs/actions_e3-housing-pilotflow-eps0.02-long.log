@@ -1,0 +1,139 @@
+
+=== lambda_min at eps=0.02 (housing/pilotflow) ===
+    support restriction: 1451/3125 nodes
+  symmetry check: max rel asym = 3.72e-08
+  Pontryagin coherence: <H eta,eta>/2 = 3.9809e-06  vs measured excess = 3.9828e-06  (ratio 1.000)
+    Hv products: 10
+    Hv products: 20
+    Hv products: 30
+    Hv products: 40
+    Hv products: 50
+    Hv products: 60
+    Hv products: 70
+    Hv products: 80
+    Hv products: 90
+    Hv products: 100
+    Hv products: 110
+    Hv products: 120
+    Hv products: 130
+    Hv products: 140
+    Hv products: 150
+    Hv products: 160
+    Hv products: 170
+    Hv products: 180
+    Hv products: 190
+    Hv products: 200
+    Hv products: 210
+    Hv products: 220
+    Hv products: 230
+    Hv products: 240
+    Hv products: 250
+    Hv products: 260
+    Hv products: 270
+    Hv products: 280
+    Hv products: 290
+    Hv products: 300
+    Hv products: 310
+    Hv products: 320
+    Hv products: 330
+    Hv products: 340
+    Hv products: 350
+    Hv products: 360
+    Hv products: 370
+    Hv products: 380
+    Hv products: 390
+    Hv products: 400
+    Hv products: 410
+    Hv products: 420
+    Hv products: 430
+    Hv products: 440
+    Hv products: 450
+    Hv products: 460
+    Hv products: 470
+    Hv products: 480
+    Hv products: 490
+    Hv products: 500
+    Hv products: 510
+    Hv products: 520
+    Hv products: 530
+    Hv products: 540
+    Hv products: 550
+    Hv products: 560
+    Hv products: 570
+    Hv products: 580
+    Hv products: 590
+    Hv products: 600
+    Hv products: 610
+    Hv products: 620
+    Hv products: 630
+    Hv products: 640
+    Hv products: 650
+    Hv products: 660
+    Hv products: 670
+    Hv products: 680
+    Hv products: 690
+    Hv products: 700
+    Hv products: 710
+    Hv products: 720
+    Hv products: 730
+    Hv products: 740
+    Hv products: 750
+    Hv products: 760
+    Hv products: 770
+    Hv products: 780
+    Hv products: 790
+    Hv products: 800
+    Hv products: 810
+    Hv products: 820
+    Hv products: 830
+    Hv products: 840
+    Hv products: 850
+    Hv products: 860
+    Hv products: 870
+    Hv products: 880
+    Hv products: 890
+    Hv products: 900
+    Hv products: 910
+    Hv products: 920
+    Hv products: 930
+    Hv products: 940
+    Hv products: 950
+    Hv products: 960
+    Hv products: 970
+    Hv products: 980
+    Hv products: 990
+    Hv products: 1000
+    Hv products: 1010
+    Hv products: 1020
+    Hv products: 1030
+    Hv products: 1040
+    Hv products: 1050
+    Hv products: 1060
+    Hv products: 1070
+    Hv products: 1080
+    Hv products: 1090
+    Hv products: 1100
+    Hv products: 1110
+    Hv products: 1120
+    Hv products: 1130
+    Hv products: 1140
+    Hv products: 1150
+    Hv products: 1160
+    Hv products: 1170
+    Hv products: 1180
+    Hv products: 1190
+    Hv products: 1200
+src/plnode/hessian.py:216: UserWarning: Exited at iteration 1200 with accuracies 
+[0.00238114]
+not reaching the requested tolerance 0.0001.
+Use iteration 1200 instead with accuracy 
+0.0023449840742249704.
+
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+src/plnode/hessian.py:216: UserWarning: Exited postprocessing with accuracies 
+[0.0002279]
+not reaching the requested tolerance 0.0001.
+  vals, vecs = lobpcg(op, X, M=Minv, largest=False, tol=tol,
+  lambda_min = 4.842651e-02   residual = 2.3e-04   (1208 Hv products, 12238s)
+
+-> results/e3_lambda_min_housing_pilotflow.json

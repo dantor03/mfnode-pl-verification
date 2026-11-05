@@ -25,20 +25,36 @@ behind continuum-depth ResNets and tests the two results of that paper:
 
 ## Key results
 
-![Degeneration of the PL constant](paper/figures/e1_c_vs_eps_moons_asym.png)
+![Three estimators of the PL degeneration](paper/figures/star_asym.png)
 
 - **Stability.** The fixed point ν\* is reached from initializations far from it, and the
-  projected Hessian stays positive definite along the whole ε-schedule.
+  projected Hessian stays positive definite along the whole ε-schedule on both benchmarks
+  (λ_min = 0.0081 on moons and 0.048 on housing at ε = 0.02). The Jacobi condition holds:
+  the problem restarted from an intermediate layer recovers the restriction of ν\*.
+- **Genericity.** On twelve perturbed data sets (resampled and noisier moons, housing
+  subsamples) the minimizer stays stable and the empirical PL constant varies by less than 2%.
 - **PL inequality.** Every sampled perturbation satisfies it, and the Wasserstein gradient
-  descent converges exponentially with a rate that does not depend on the initialization.
-- **Degeneration as ε → 0⁺.** Independent estimators show that the PL constant decays
-  essentially linearly in ε: c(ε) ∝ ε^1.06 and ĉ(ε) ∝ ε^1.20 on the classification task
-  (figure above), with a super-linear steepening at the smallest ε.
+  descent converges exponentially with a rate that does not depend on the initial direction.
+- **Degeneration as ε → 0⁺.** Three independent estimators show that the PL constant decays
+  essentially linearly in ε. On the classification task (moons) c(ε) ∝ ε^1.06 and
+  ĉ(ε) ∝ ε^1.20, with a super-linear steepening at the smallest ε, where ν\* concentrates; on
+  the regression task (housing) c(ε) ∝ ε^0.99, ĉ(ε) ∝ ε^1.04 and λ_min(ε) ∝ ε^0.94, with no
+  steepening.
 - The loss of convergence of the fixed-point iteration at small ε is a period-doubling of
   the damped map, not a loss of stability of ν\*.
 
-Status: **draft**. Results still to be computed are marked in orange in the
-PDF; see [`ROADMAP.md`](ROADMAP.md).
+Open points, stated in the preprint:
+
+- The levels of the estimators depend on the grid (the same perturbation cloud gives a c
+  about twice as large on the asymmetric grid as on the pilot grid); only the exponents
+  are compared across grids.
+- At ε = 0.02 the relative entropy to ν\* decays with a slow tail of small amplitude that
+  the cost does not show.
+- On moons the region where the cost is quadratic around ν\* shrinks by more than a factor
+  of four between ε = 0.05 and ε = 0.02.
+
+Status: **complete draft**, pending review before submission; see
+[`ROADMAP.md`](ROADMAP.md).
 
 ## Layout
 
@@ -54,7 +70,8 @@ src/plnode/       library
   datasets.py        frozen benchmarks (moons / California Housing top-2)
 experiments/      runners (00–03 solver & gates, 10–12 uniqueness/continuation/
                   concentration, 13 genericity, 14 Jacobi condition,
-                  e1–e4 PL experiments, fig_star, fig_optimum)
+                  15 grid dependence of c, 16 quadratic regime,
+                  e1–e4 PL experiments, fig_star, fig_e2_entropy, fig_optimum)
 results/          frozen ν* checkpoints (nu_star/), experiment outputs, logs
 tests/            correctness suite (pytest)
 ```
@@ -68,6 +85,7 @@ python experiments/00_compute_nu_star.py --all  # or use the frozen checkpoints
 python experiments/e1_pl_constant.py --problem moons --grid asym
 python experiments/e2_descent.py --problem moons --eps 0.05 --n-steps 600
 python experiments/e3_hessian.py --problem moons --grid pilot --all-eps
+python experiments/fig_star.py --grid asym
 cd paper && latexmk -pdf main.tex
 ```
 

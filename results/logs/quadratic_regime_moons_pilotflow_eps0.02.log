@@ -1,0 +1,6 @@
+    support restriction: 491/3125 nodes
+  a = 0.02    quad = 7.6752e-06  excess = 9.9954e-05  ratio = 0.077  even ratio = 0.018  odd = -3.26e-04  (26s)
+  a = 0.01    quad = 1.9115e-06  excess = 7.1817e-06  ratio = 0.266  even ratio = 0.041  odd = -3.96e-05  (25s)
+  a = 0.005   quad = 4.7696e-07  excess = 5.2122e-07  ratio = 0.915  even ratio = 0.268  odd = -1.26e-06  (25s)
+  a = 0.0025  quad = 1.1913e-07  excess = 1.4905e-07  ratio = 0.799  even ratio = 0.994  odd = 2.91e-08  (25s)
+-> /home/claude/mfnode-pl-verification/results/quadratic_regime.json

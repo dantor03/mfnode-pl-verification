@@ -598,7 +598,8 @@ on a $3^5$ test grid to $<10^{-3}$ relative).  Internal checks: Hessian
 symmetry to $4\cdot10^{-8}$ on random tangent pairs, and the quadratic
 model predicts the measured excess of a small multiplicative perturbation to
 $3\%$ ($\langle H\eta,\eta\rangle/2=9.85\cdot10^{-6}$ vs
-$9.55\cdot10^{-6}$).
+$9.55\cdot10^{-6}$ on \emph{moons} at $\eps=0.05$; its dependence on the
+amplitude is discussed in Section~\ref{sec:e3}).
 
 \subsection{Correctness tests}
 \label{sec:method-tests}
@@ -792,7 +793,7 @@ of the effective tolerance $\mathrm{tol}/\omega=5\cdot10^{-4}$.}
 \label{sec:e3}
 Table~\ref{tab:estimators} reports $\lambda_{\min}(\eps)$ of the projected
 Hessian at $\bnu^*_\eps$ (Section~\ref{sec:method-hessian}; $103$--$308$
-Hessian-vector products per value).  On \emph{moons} it decreases from
+Hessian-vector products per value, $1208$ at $\eps=0.02$).  On \emph{moons} it decreases from
 $1.23$ at $\eps=0.5$ to $4.42\cdot10^{-2}$ at $\eps=0.05$ and stays strictly
 positive: the computed minimizers are stable in the sense
 of~\cite{DaudinDelarue2025} across the schedule --- a quantitative version of
@@ -802,17 +803,38 @@ fixed points are strict local minima and not saddles.  The $\lambda_{\min}$
 curve is not a clean power law: its local log-log slope steepens from
 $1.32$ ($\eps\in[0.2,0.5]$) to $1.71$ ($\eps\in[0.05,0.1]$), a super-linear
 degeneration discussed in Section~\ref{sec:heuristic}.  At the flow-refined
-$\eps=0.02$ endpoint $\lambda_{\min}=0.0095$, still positive, with local
-slope $1.67$; there LOBPCG stopped at residual $3\cdot10^{-3}$, so the value
-is an upper bound within $0.003$ of an eigenvalue.  On \emph{housing}
+$\eps=0.02$ endpoint $\lambda_{\min}=0.0081$ (residual $7\cdot10^{-5}$),
+still positive, and the steepening continues: local slope $1.86$ on
+$[0.02,0.05]$.  On \emph{housing}
 $\lambda_{\min}=1.06$, $0.440$, $0.236$ and $0.134$ at $\eps=0.5$, $0.2$,
 $0.1$ and $0.05$: strictly positive as well, and degenerating more slowly,
 with slope $0.90$ over $[0.05,0.5]$ (local slopes $0.96$, $0.90$ and $0.82$)
 and no steepening.  At the flow-refined $\eps=0.02$ endpoint
-$\lambda_{\min}=0.0485$, still positive; there LOBPCG stopped at residual
-$5\cdot10^{-3}$ instead of $10^{-4}$, so this value, a Rayleigh quotient, is
-an upper bound for $\lambda_{\min}$ and lies within $0.005$ of an
-eigenvalue.  Including it, the slope is $0.94$.
+$\lambda_{\min}=0.0484$, still positive; there LOBPCG stopped at residual
+$2\cdot10^{-4}$ instead of $10^{-4}$, so this value, a Rayleigh quotient, is
+an upper bound for $\lambda_{\min}$ and lies within $2\cdot10^{-4}$ of an
+eigenvalue.  Including it, the slope is $0.94$ (local slope $1.11$ on
+$[0.02,0.05]$).
+
+The quadratic model of Section~\ref{sec:method-hessian},
+$\langle H\eta,\eta\rangle/2$ against the measured excess $J(\bnu^*+\eta)-J^*$
+of a lognormal tilt $\eta$ of amplitude $a=0.02$, holds on both benchmarks
+at every $\eps$ but one: at the \emph{moons} $\eps=0.02$ endpoint it
+accounts for only $8\%$ of the excess.  Repeating the check at smaller amplitudes and
+splitting the excess into its parts even and odd in $\eta$ locates the
+cause.  The even part matches the quadratic model to $1\%$ at $a=0.0025$,
+but is $3.7$ times larger at $a=0.005$ and $55$ times larger at $a=0.02$,
+and the odd part grows at least like $a^3$: the excess is dominated by
+higher-order terms, not by a residual first variation.  At \emph{moons}
+$\eps\ge0.05$, by contrast, the even part matches to $0.1\%$ at every
+amplitude up to $0.02$ (the $3\%$ mismatch of
+Section~\ref{sec:method-hessian} is an odd part linear in $a$, the first
+variation left by the fixed-point tolerance), and on \emph{housing} the
+check holds at $a=0.02$ also at $\eps=0.02$.  On \emph{moons} the region
+where $J$ is quadratic around $\bnu^*$ therefore shrinks by more than a
+factor of four in amplitude between $\eps=0.05$ and $\eps=0.02$, and
+$\lambda_{\min}(0.02)$ describes the curvature only inside that smaller
+region.
 
 \subsection{Genericity: stability under perturbations of the data}
 \label{sec:genericity}
@@ -1111,8 +1133,11 @@ everything we can reach with $\TV\le0.9$ ($\lambda^2$ up to $7.2$).  Nor
 does E2 show a finite neighborhood: the amplitude dependence of $\hat c$ is
 present at every $\eps$, is no stronger at $\eps=0.02$, and goes the wrong
 way for one (Section~\ref{sec:e2}(b)).  Whether the radius shrinks with
-$\eps$ is therefore open.  The caveat is plain: one perturbation family,
-one $\eps$.
+$\eps$ is therefore open.  What does shrink, on \emph{moons}, is the region
+where $J$ is quadratic around $\bnu^*$ (Section~\ref{sec:e3}); outside it
+the excess is larger than the quadratic model predicts, which is compatible
+with a PL inequality holding farther out.  The caveat is plain: one
+perturbation family, one $\eps$.
 
 \subsection{The degeneration picture}
 \label{sec:degeneration}
@@ -1129,9 +1154,9 @@ $\eps$ & $c$ (E1) & $\hat c$ (E2) & $\lambda_{\min}$ (E3)
 0.2  & 2.31 & 1.41 & 0.368  & 2.19 & 1.55 & 0.440\\
 0.1  & 1.28 & 0.70 & 0.144  & 1.10 & 0.743 & 0.236\\
 0.05 & 0.70 & 0.33 & 0.0442 & 0.555 & 0.365 & 0.134\\
-0.02$^\dagger$ & 0.159 & 0.080 & 0.0095$^\ddagger$ & 0.227 & 0.142 & 0.0485$^\ddagger$\\
+0.02$^\dagger$ & 0.159 & 0.080 & 0.0081 & 0.227 & 0.142 & 0.0484$^\ddagger$\\
 \midrule
-log-log slope & 1.06 & 1.20 & 1.51 & 0.99 & 1.04 & 0.94\\
+log-log slope & 1.06 & 1.20 & 1.56 & 0.99 & 1.04 & 0.94\\
 \bottomrule
 \end{tabular}
 \vskip 2pt
@@ -1143,9 +1168,8 @@ Slopes over the computed values.
 $^\dagger$Relative to the flow-refined endpoint ($99/100$ admissible cloud
 points on \emph{moons}, $100/100$ on \emph{housing}; the non-converged
 iterate admits none on \emph{moons}).
-$^\ddagger$LOBPCG residual $3\cdot10^{-3}$ (\emph{moons}) and
-$5\cdot10^{-3}$ (\emph{housing}), tolerance $10^{-4}$ elsewhere:
-Rayleigh-quotient upper bounds.}
+$^\ddagger$LOBPCG residual $2\cdot10^{-4}$ (tolerance $10^{-4}$
+elsewhere): a Rayleigh-quotient upper bound.}
 \label{tab:estimators}
 \end{table}
 
@@ -1156,7 +1180,7 @@ in $\eps$ that the authors flag as an open direction.
 Figure~\ref{fig:star} superposes the three estimators in log-log.
 $\lambda_{\min}(\eps)$ --- which lives in a different (Euclidean,
 grid-dependent) normalization and sits an order of magnitude below ---
-degenerates faster on \emph{moons} (slope $1.51$) and shares with $c$
+degenerates faster on \emph{moons} (slope $1.56$) and shares with $c$
 and $\hat c$ the super-linear steepening at the smallest $\eps$.  On
 \emph{housing} the degeneration is linear without steepening:
 $c\propto\eps^{0.99}$ down to $\eps=0.02$, $\hat c\propto\eps^{1.04}$ and
@@ -1366,7 +1390,8 @@ Fisher & compatible (fd) assembly, $\log\nu$ floored at $-40$\\
 flow & Scharfetter--Gummel, explicit Euler at $0.9\times$CFL,\\
      & $\Psi$ refreshed every $m=5$ steps, per-slice renormalization\\
 Hessian & central step $h=10^{-5}$, support threshold $10^{-6}$,\\
-        & LOBPCG with entropic-diagonal preconditioner, null-space penalty $\sigma=100$\\
+        & LOBPCG with entropic-diagonal preconditioner, null-space penalty $\sigma=100$,\\
+        & tolerance $10^{-4}$, $300$ iterations ($1200$--$1500$ for the reruns)\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1377,7 +1402,10 @@ per fixed-point iteration; full continuations $0.5$--$5$\,h; E1 $\approx2$\,h
 and E2 $1$--$2$\,h per $\eps$; E3 $0.3$--$3.6$\,h per eigenvalue; flow
 refinement of the $\eps=0.02$ endpoint $1$\,h (pilot) to $7$\,h
 (asymmetric).  Every $\bnu^*$ is stored as a resumable checkpoint consumed
-unchanged by all experiment runners.
+unchanged by all experiment runners.  Part of the \emph{housing} runs, the
+genericity probe and the eigenvalue reruns were executed on GitHub-hosted
+runners with comparable timings; their logs are
+\texttt{results/logs/actions\_*.log}.
 
 
 % ============================================================================
