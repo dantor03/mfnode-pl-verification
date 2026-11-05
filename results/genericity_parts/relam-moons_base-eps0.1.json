@@ -1,0 +1,9 @@
+{
+ "tag": "moons_base",
+ "eps": 0.1,
+ "lambda_min": 0.14431536213667426,
+ "residual": 1.0342816975131277e-07,
+ "hv_products": 1504,
+ "maxiter": 1500,
+ "seconds": 5580.90229177475
+}
