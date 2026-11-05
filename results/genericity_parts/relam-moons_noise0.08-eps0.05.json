@@ -1,0 +1,9 @@
+{
+ "tag": "moons_noise0.08",
+ "eps": 0.05,
+ "lambda_min": 0.05313179791482984,
+ "residual": 0.005720898587151192,
+ "hv_products": 1504,
+ "maxiter": 1500,
+ "seconds": 5367.055115699768
+}
